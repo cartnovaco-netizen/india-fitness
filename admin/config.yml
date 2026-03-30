@@ -16,6 +16,7 @@ collections:
       - file: "_data/trainers.json"
         label: "Trainers"
         name: "trainers_data"
+        format: "json"
         fields:
           - label: "Trainers List"
             name: "trainers"
@@ -34,6 +35,7 @@ collections:
       - file: "_data/gallery.json"
         label: "Gallery Items"
         name: "gallery_data"
+        format: "json"
         fields:
           - label: "Gallery List"
             name: "items"
@@ -48,6 +50,7 @@ collections:
       - file: "_data/plans.json"
         label: "Plans Data"
         name: "plans_data"
+        format: "json"
         fields:
           - label: "Plans List"
             name: "plans"
