@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Fitness | #1 Gym in Sipara, Patna</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo_real_2.png">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="dark-theme">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="logo-loader">
+            <img src="assets/images/logo.png" alt="India Fitness Logo" id="loader-logo">
+            <div class="loader-glow"></div>
+        </div>
+    </div>
+
+    <!-- Header / Nav -->
+    <header id="main-header">
+        <nav class="container">
+            <div class="logo">
+                <a href="#hero">
+                    <img src="assets/images/logo.png" alt="India Fitness">
+                    <span>INDIA FITNESS</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#facilities">Facilities</a></li>
+                <li><a href="#plans">Plans</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <a href="tel:8544007735" class="cta-nav mobile-hide">Join Now</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content container">
+                <h2 class="subheading animate-text">💪 #TOP 1 GYM IN PATNA</h2>
+                <h1 class="animate-text">Transform Your Body at <br><span class="accent-red">India Fitness</span></h1>
+                <div class="hero-btns animate-text">
+                    <a href="#plans" class="btn btn-primary magnetic">Join Now</a>
+                    <a href="#facilities" class="btn btn-secondary magnetic">View Plans</a>
+                </div>
+            </div>
+            <div class="scroll-down">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container grid-two">
+                <div class="about-text" data-aos="fade-right">
+                    <h2 class="section-title">ABOUT US</h2>
+                    <p>India Fitness is a premium fitness center in Sipara, Patna offering modern equipment, expert trainers, and a motivating environment for all fitness levels. We believe in results-driven training and community support.</p>
+                    <div class="counters">
+                        <div class="counter-item">
+                            <span class="counter-value" data-target="500">0</span>+
+                            <p>Members</p>
+                        </div>
+                        <div class="counter-item">
+                            <span class="counter-value" data-target="10">0</span>+
+                            <p>Trainers</p>
+                        </div>
+                        <div class="counter-item">
+                            <span class="counter-value" data-target="50">0</span>+
+                            <p>Equipment</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image" data-aos="fade-left">
+                    <img src="assets/images/gym_interior.jpg" alt="India Fitness Interior">
+                </div>
+            </div>
+        </section>
+
+        <!-- Facilities Section -->
+        <section id="facilities" class="section bg-light-dark">
+            <div class="container">
+                <h2 class="section-title text-center">OUR FACILITIES</h2>
+                <div class="facilities-grid">
+                    <div class="facility-card tilt-card" data-aos="zoom-in">
+                        <i class="fas fa-dumbbell"></i>
+                        <h3>Modern Equipment</h3>
+                        <p>Latest machines for all muscle groups.</p>
+                    </div>
+                    <div class="facility-card tilt-card" data-aos="zoom-in" data-aos-delay="100">
+                        <i class="fas fa-running"></i>
+                        <h3>Cardio Section</h3>
+                        <p>High-end treadmills and cycles.</p>
+                    </div>
+                    <div class="facility-card tilt-card" data-aos="zoom-in" data-aos-delay="200">
+                        <i class="fas fa-weight-hanging"></i>
+                        <h3>Weight Training</h3>
+                        <p>Free weights and dedicated lifting area.</p>
+                    </div>
+                    <div class="facility-card tilt-card" data-aos="zoom-in" data-aos-delay="300">
+                        <i class="fas fa-user-ninja"></i>
+                        <h3>Personal Training</h3>
+                        <p>One-on-one expert guidance.</p>
+                    </div>
+                    <div class="facility-card tilt-card" data-aos="zoom-in" data-aos-delay="400">
+                        <i class="fas fa-fist-raised"></i>
+                        <h3>Functional Training</h3>
+                        <p>Dynamic movements and HIIT area.</p>
+                    </div>
+                    <div class="facility-card tilt-card" data-aos="zoom-in" data-aos-delay="500">
+                        <i class="fas fa-hot-tub"></i>
+                        <h3>Steam Bath</h3>
+                        <p>Relax and recover after your workout.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Membership Plans -->
+        <section id="plans" class="section">
+            <div class="container">
+                <h2 class="section-title text-center">MEMBERSHIP PLANS</h2>
+                <div class="plans-grid">
+                    <!-- Monthly -->
+                    <div class="plan-card tilt-card" data-aos="fade-up">
+                        <div class="plan-header">
+                            <h3>Monthly Plan</h3>
+                            <p class="plan-type">Basic</p>
+                        </div>
+                        <div class="plan-price">₹1100 <span>/ month</span></div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Gym access + equipment</li>
+                            <li><i class="fas fa-check"></i> Steam Bath</li>
+                            <li><i class="fas fa-check"></i> BMI Check</li>
+                            <li><i class="fas fa-check"></i> Diet Chart</li>
+                        </ul>
+                        <a href="tel:8544007735" class="btn btn-outline">Select Plan</a>
+                    </div>
+                    <!-- Quarterly -->
+                    <div class="plan-card featured tilt-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="plan-header">
+                            <h3>Quarterly Plan</h3>
+                            <p class="plan-type">Standard</p>
+                        </div>
+                        <div class="plan-price">₹3500 <span>/ 3 months</span></div>
+                        <p class="bonus-tag">+15 days bonus</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Steam Bath</li>
+                            <li><i class="fas fa-check"></i> BMI Check</li>
+                            <li><i class="fas fa-check"></i> Diet Chart</li>
+                            <li><i class="fas fa-check"></i> Free Kit</li>
+                        </ul>
+                        <a href="tel:8544007735" class="btn btn-primary">Select Plan</a>
+                    </div>
+                    <!-- Half-Yearly -->
+                    <div class="plan-card tilt-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="plan-header">
+                            <h3>Half-Yearly Plan</h3>
+                            <p class="plan-type">Premium</p>
+                        </div>
+                        <div class="plan-price">₹6000 <span>/ 6 months</span></div>
+                        <p class="bonus-tag">+20 days bonus</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Steam Bath</li>
+                            <li><i class="fas fa-check"></i> BMI Check</li>
+                            <li><i class="fas fa-check"></i> Diet Chart</li>
+                            <li><i class="fas fa-check"></i> Free Kit</li>
+                        </ul>
+                        <a href="tel:8544007735" class="btn btn-outline">Select Plan</a>
+                    </div>
+                    <!-- Yearly -->
+                    <div class="plan-card black-plan tilt-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="plan-header">
+                            <h3>Yearly Plan</h3>
+                            <p class="plan-type">Black</p>
+                        </div>
+                        <div class="plan-price">₹11000 <span>/ year</span></div>
+                        <p class="bonus-tag">+1 month bonus</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-star"></i> Includes all benefits</li>
+                            <li><i class="fas fa-check"></i> Full VIP Treatment</li>
+                            <li><i class="fas fa-check"></i> Recovery Access</li>
+                        </ul>
+                        <a href="tel:8544007735" class="btn btn-black">Join #Black</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Team -->
+        <section id="team" class="section bg-light-dark">
+            <div class="container">
+                <h2 class="section-title text-center">OUR EXPERT TEAM</h2>
+                <div class="team-grid">
+                    <!-- Vivek Raj -->
+                    <div class="team-card" data-aos="flip-left">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/trainer_vivek_real.jpg" alt="Vivek Raj">
+                        </div>
+                        <div class="team-info">
+                            <h3>Vivek Raj</h3>
+                            <p class="role">Head Coach / Manager</p>
+                            <p class="exp">5+ Years Experience</p>
+                            <div class="specialization">
+                                <span>Strength Training</span>
+                                <span>Bodybuilding</span>
+                            </div>
+                            <p class="bio">“Leading India Fitness with expertise and dedication, helping members achieve real results.”</p>
+                        </div>
+                    </div>
+                    <!-- Rocky Raj -->
+                    <div class="team-card" data-aos="flip-left" data-aos-delay="100">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/trainer_rocky.jpg" alt="Rocky Raj">
+                        </div>
+                        <div class="team-info">
+                            <h3>Rocky Raj</h3>
+                            <p class="role">Evening Coach</p>
+                            <p class="exp">3+ Years Experience</p>
+                            <div class="specialization">
+                                <span>Fat Loss</span>
+                                <span>Cardio Training</span>
+                            </div>
+                            <p class="bio">“Focused on helping members stay consistent and achieve their fitness goals.”</p>
+                        </div>
+                    </div>
+                    <!-- Morning Coach -->
+                    <div class="team-card" data-aos="flip-left" data-aos-delay="200">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/trainer_morning.jpg" alt="Morning Coach">
+                        </div>
+                        <div class="team-info">
+                            <h3>Morning Coach</h3>
+                            <p class="role">Morning Coach</p>
+                            <p class="exp">3+ Years Experience</p>
+                            <div class="specialization">
+                                <span>Weight Training</span>
+                                <span>Strength Building</span>
+                            </div>
+                            <p class="bio">“Helping members kickstart their day with effective workouts and disciplined training routines.”</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section">
+            <div class="container">
+                <h2 class="section-title text-center">GALLERY</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-aos="zoom-in">
+                        <img src="assets/images/treadmill_area.jpg" alt="Treadmill Area">
+                        <div class="overlay"><span>Treadmill Area</span></div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop" alt="Weight Training Area">
+                        <div class="overlay"><span>Weight Training</span></div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in">
+                        <img src="assets/images/award_ceremony.jpg" alt="Award Ceremony">
+                        <div class="overlay"><span>India Fitness Awards</span></div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in">
+                        <img src="assets/images/gallery_muscles.png" alt="Muscular athletes">
+                        <div class="overlay"><span>Athlete Highlight</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="section bg-light-dark">
+            <div class="container">
+                <h2 class="section-title text-center">REAL REVIEWS</h2>
+                <div class="reviews-slider">
+                    <div class="review-track">
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p>“Best gym in Sipara! Equipment is modern and trainers are very supportive.”</p>
+                            <h4>- Rahul Kumar</h4>
+                        </div>
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p>“Very clean and motivating environment. Worth every rupee.”</p>
+                            <h4>- Anjali Singh</h4>
+                        </div>
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p>“Affordable pricing with great facilities. Highly recommended.”</p>
+                            <h4>- Vikram Raj</h4>
+                        </div>
+                    </div>
+                    <div class="slider-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                        <span class="dot" data-index="2"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Map -->
+        <section id="location" class="section">
+            <div class="container grid-two">
+                <div class="location-info" data-aos="fade-right">
+                    <h2 class="section-title">FIND US</h2>
+                    <p><i class="fas fa-map-marker-alt"></i> Sipara, Patna — above Aditi Vision</p>
+                    <p><i class="fas fa-phone-alt"></i> <a href="tel:8544007735">+91 8544007735</a></p>
+                    <p><i class="fas fa-clock"></i> Mon - Sat: 5:00 AM - 10:00 PM</p>
+                    <p><i class="fas fa-clock"></i> Sun: 7:00 AM - 12:00 PM</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=25.5825166,85.1282286" target="_blank" class="btn btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                </div>
+                <div id="map" class="map-container" data-aos="fade-left"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="India Fitness Logo">
+                    <h3>INDIA FITNESS</h3>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 INDIA FITNESS. ALL RIGHTS RESERVED. DESIGNED WITH POWER.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
