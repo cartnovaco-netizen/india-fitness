@@ -40,13 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const magneticBtns = document.querySelectorAll('.magnetic');
 
     window.addEventListener('mousemove', (e) => {
-        // Hero background parallax
-        const xValue = (e.clientX / window.innerWidth - 0.5) * 20;
-        const yValue = (e.clientY / window.innerHeight - 0.5) * 20;
-        if(hero) {
-            hero.style.backgroundPosition = `calc(50% + ${xValue}px) calc(50% + ${yValue}px)`;
-        }
-
         // Magnetic Buttons attraction
         magneticBtns.forEach(btn => {
             const rect = btn.getBoundingClientRect();
