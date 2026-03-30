@@ -342,6 +342,26 @@ nav {
     animation: fadeInUp 0.8s forwards 1.4s;
 }
 
+.motivation-scroller-wrapper {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-top: -10px;
+    margin-bottom: 2.5rem;
+    letter-spacing: 1px;
+    height: 1.2em;
+    font-style: italic;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards 1.5s;
+}
+
+.motivation-scroller-wrapper::before {
+    content: "— ";
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
 .hero-btns {
     display: flex;
     gap: 20px;

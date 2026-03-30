@@ -268,4 +268,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 9. Motivation Scroller Logic
+    const motivationText = document.getElementById('motivation-text');
+    const phrases = [
+        "Build a Stronger You",
+        "Push Your Limits Every Day",
+        "Join the Elite Patna Fitness Club",
+        "Unleash Your Inner Potential",
+        "Consistency is the Key to Success",
+        "Train Hard, Stay Focused"
+    ];
+    let phraseIdx = 0;
+
+    if (motivationText) {
+        setInterval(() => {
+            motivationText.style.opacity = '0';
+            motivationText.style.transition = 'opacity 0.6s ease';
+            
+            setTimeout(() => {
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                motivationText.innerText = phrases[phraseIdx];
+                motivationText.style.opacity = '1';
+            }, 600); // 0.6s for fade out
+        }, 4000);
+    }
+
 });
