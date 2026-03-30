@@ -40,24 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const magneticBtns = document.querySelectorAll('.magnetic');
 
     window.addEventListener('mousemove', (e) => {
-        // Magnetic Buttons attraction
-        magneticBtns.forEach(btn => {
-            const rect = btn.getBoundingClientRect();
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            const btnX = rect.left + rect.width / 2;
-            const btnY = rect.top + rect.height / 2;
-            const distance = Math.sqrt(Math.pow(mouseX - btnX, 2) + Math.pow(mouseY - btnY, 2));
-            const limit = 80;
-
-            if (distance < limit) {
-                const moveX = (mouseX - btnX) * 0.4;
-                const moveY = (mouseY - btnY) * 0.4;
-                btn.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            } else {
-                btn.style.transform = `translate(0, 0)`;
-            }
-        });
+        // No magnetic logic here
     });
 
     // 4. 3D Tilt Card Effect
