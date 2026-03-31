@@ -44,12 +44,16 @@ module.exports = async function handler(req, res) {
         (function() {
           function sendAuth() {
             var message = 'authorization:github:success:{"token":"${token}","provider":"github"}';
-            var origin = (window.opener && window.opener.location.origin) || "*";
+            var origin = "*";
+            try {
+              if (window.opener && window.opener.location && window.opener.location.origin) {
+                origin = window.opener.location.origin;
+              }
+            } catch(e) {
+               // Location is cross-origin or restricted, safe fallback to '*'
+            }
             if (window.opener) {
               window.opener.postMessage(message, origin);
-            }
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage(message, origin);
             }
           }
 
@@ -57,7 +61,7 @@ module.exports = async function handler(req, res) {
           try {
             sendAuth();
           } catch(err) {
-            console.error(err);
+            console.error("Failed first send:", err);
           }
 
           // Also setup the ping-pong listener for Decap CMS
@@ -68,14 +72,12 @@ module.exports = async function handler(req, res) {
           }
           window.addEventListener("message", receiveMessage, false);
           
-          // Poll to ensure it ping-pongs
+          // Poll to ensure delivery if the parent is slow to attach its listener
           var attempts = 0;
           var interval = setInterval(function() {
-             if (window.opener) {
-               window.opener.postMessage("authorizing:github", "*");
-             }
+             try { sendAuth(); } catch(e) {}
              attempts++;
-             if (attempts > 5) {
+             if (attempts >= 10) {
                clearInterval(interval);
                window.close();
              }
@@ -84,7 +86,7 @@ module.exports = async function handler(req, res) {
           // Auto-close safety fallback
           setTimeout(function() {
             window.close();
-          }, 2000);
+          }, 4000);
         })();
       </script>
     </body>
