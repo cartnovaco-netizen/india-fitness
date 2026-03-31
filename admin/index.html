@@ -48,19 +48,32 @@
               config.backend.repo = 'cartnovaco-netizen/INDIA-FITNESS';
             }
 
+            // Debugging helper
+            const debugLog = (msg) => {
+              console.log("[CMS DEBUG]", msg);
+              const logEl = document.getElementById("cms-debug-log");
+              if (logEl) logEl.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+            };
+
+            // Catch the message from the popup
+            window.addEventListener('message', (e) => {
+              debugLog("Received message from origin: " + e.origin);
+              debugLog("Message Data: " + JSON.stringify(e.data).substring(0, 50));
+            }, false);
+
             // Start CMS
             window.CMS.init({ config });
-            
-            // Helpful debug for browser console
-            console.log("India Fitness Admin Ready.");
+            debugLog("CMS Initialized.");
           } catch (e) {
             console.error("CMS Init Error:", e);
           }
         }
 
-        // Run as soon as possible
         init();
       })();
     </script>
+    <div id="cms-debug-log" style="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:white;padding:10px;font-size:10px;max-width:300px;max-height:200px;overflow:auto;pointer-events:none;z-index:9999;">
+      DEBUG LOG:
+    </div>
   </body>
 </html>
