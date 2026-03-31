@@ -11,27 +11,36 @@
   <body>
     <script>
       (function() {
-        // We MUST set this BEFORE the script is fully parsed/executing if possible, 
-        // but here we use it to control the manual boot.
         window.CMS_MANUAL_INIT = true;
 
         async function initCMS() {
+          let attempts = 0;
+          const maxAttempts = 10;
+          
+          while (!window.CMS && attempts < maxAttempts) {
+            console.log("Waiting for CMS object...");
+            await new Promise(r => setTimeout(r, 200));
+            attempts++;
+          }
+
+          if (!window.CMS) {
+            document.body.innerHTML = '<h2 style="color:red;text-align:center;">CMS library failed to load. Check your internet connection.</h2>';
+            return;
+          }
+
           try {
             const response = await fetch('/admin/config.yml');
             const yamlText = await response.text();
             const config = jsyaml.load(yamlText);
 
-            // Dynamically point to our Vercel API for login
-            if (config.backend) {
+            if (config && config.backend) {
               config.backend.base_url = window.location.origin + '/api';
             }
 
-            // Initialize with our modified config
             window.CMS.init({ config });
-            
-            console.log("CMS Initialized with base_url:", config.backend.base_url);
+            console.log("CMS Initialized successfully.");
           } catch (err) {
-            console.error("CMS Manual Init Failed:", err);
+            console.error("CMS Init Failed:", err);
             document.body.innerHTML = `<div style="text-align:center;padding:50px;font-family:sans-serif;">
               <h2 style="color:red;">Admin Panel Error</h2>
               <p>${err.message}</p>
@@ -39,7 +48,6 @@
           }
         }
 
-        // Start the process
         if (window.location.protocol !== 'file:') {
           initCMS();
         } else {
