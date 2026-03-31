@@ -174,10 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     const gymIcon = L.icon({
-        iconUrl: 'assets/images/dumbbell_pin.png',
-        iconSize: [50, 50],
-        iconAnchor: [25, 50],
-        popupAnchor: [0, -50]
+        iconUrl: 'assets/images/logo_real_2.png',
+        iconSize: [60, 60],
+        iconAnchor: [30, 30],
+        popupAnchor: [0, -30]
     });
 
     L.marker([25.5825166, 85.1282286], { icon: gymIcon }).addTo(map)
