@@ -956,6 +956,18 @@ textarea.form-control {
 .iti__dial-code { color: #888; }
 .iti__selected-flag { background-color: rgba(255,255,255,0.05); border-radius: 6px 0 0 6px; }
 
+.error-shake {
+    border-color: #e63946 !important;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-5px); }
+}
+
 @media (max-width: 600px) {
     .hero-content h1 {
         font-size: 2.5rem;

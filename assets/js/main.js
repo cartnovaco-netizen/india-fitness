@@ -243,6 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // 3. Phone Validation Check
+            if (iti && !iti.isValidNumber()) {
+                phoneInput.classList.add('error-shake');
+                alert("Please enter a valid phone number for the selected country.");
+                setTimeout(() => phoneInput.classList.remove('error-shake'), 500);
+                return;
+            }
+
             const originalText = contactSubmitBtn.innerText;
             contactSubmitBtn.innerText = 'SENDING...';
             contactSubmitBtn.disabled = true;
