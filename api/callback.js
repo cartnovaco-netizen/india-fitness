@@ -50,17 +50,35 @@ module.exports = async function handler(req, res) {
       <script>
         (function() {
           function sendAuth() {
-            var message = 'authorization:github:success:{"token":"${token}","provider":"github"}';
             var origin = "*";
             try {
               if (window.opener && window.opener.location && window.opener.location.origin) {
                 origin = window.opener.location.origin;
               }
-            } catch(e) {
-               // Location is cross-origin or restricted, safe fallback to '*'
-            }
-            if (window.opener) {
-              window.opener.postMessage(message, origin);
+            } catch(e) {}
+            
+            var targets = [window.opener, window.parent];
+            
+            // Decap CMS 3.x Generic OAuth String
+            var msgStringJSON = 'authorization:github:success:{"token":"${token}","provider":"github"}';
+            // Decap CMS Legacy String
+            var msgStringLegacy = 'authorization:github:success:${token}';
+            // Modern Netlify CMS Auth Object
+            var msgObject = {
+              source: 'netlify-cms-auth',
+              payload: {
+                token: '${token}',
+                provider: 'github'
+              }
+            };
+
+            for (var i = 0; i < targets.length; i++) {
+              var target = targets[i];
+              if (target && target !== window) {
+                try { target.postMessage(msgStringJSON, origin); } catch(err) {}
+                try { target.postMessage(msgStringLegacy, origin); } catch(err) {}
+                try { target.postMessage(msgObject, origin); } catch(err) {}
+              }
             }
           }
 
