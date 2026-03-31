@@ -57,6 +57,20 @@ module.exports = async function handler(req, res) {
               }
             } catch(e) {}
             
+            // Bypass Decap CMS `e.source === this.authWindow` bug by injecting token directly
+            // Since we are on the same domain (/api/ callback), we have access to the same localStorage!
+            try {
+              var userObj = {
+                token: '${token}',
+                backend_type: 'github',
+                provider: 'github'
+              };
+              window.localStorage.setItem("decap-cms-user", JSON.stringify(userObj));
+              window.localStorage.setItem("netlify-cms-user", JSON.stringify(userObj));
+            } catch (err) {
+              console.error("Failed to write to localStorage:", err);
+            }
+
             var targets = [window.opener, window.parent];
             
             // Decap CMS 3.x Generic OAuth String
@@ -104,12 +118,15 @@ module.exports = async function handler(req, res) {
              attempts++;
              if (attempts >= 10) {
                clearInterval(interval);
+               // Try to force reload the parent because it must have dropped the postMessage
+               try { if (window.opener && !window.opener.closed) window.opener.location.reload(); } catch (e) {}
                window.close();
              }
           }, 300);
 
           // Auto-close safety fallback
           setTimeout(function() {
+            try { if (window.opener && !window.opener.closed) window.opener.location.reload(); } catch (e) {}
             window.close();
           }, 4000);
         })();
