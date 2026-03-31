@@ -16,26 +16,36 @@
     <script>
       window.onload = async function() {
         if (!window.CMS) {
-          console.error("CMS not found on window");
-          document.body.innerHTML = '<h2 style="color:red;text-align:center;margin-top:50px;">Admin Panel failed to load. Please refresh.</h2>';
+          document.body.innerHTML = '<h2 style="color:red;text-align:center;margin-top:50px;">Admin Panel failed to load. Clear your cache and refresh.</h2>';
           return;
         }
 
         try {
           const res = await fetch('/admin/config.yml');
-          const text = await res.text();
-          const config = jsyaml.load(text);
+          const yamlText = await res.text();
+          const config = jsyaml.load(yamlText);
 
           // Force absolute API URL
           if (config.backend) {
             config.backend.base_url = window.location.origin + '/api';
+            config.backend.name = 'github';
+            config.backend.repo = 'cartnovaco-netizen/INDIA-FITNESS';
           }
 
+          // Initialize
           window.CMS.init({ config });
-          console.log("Admin Panel Ready");
+          
+          // Debugging helper
+          console.log("CMS Initialized. Checking auth memory...");
+          const stored = localStorage.getItem('decap-cms-user') || localStorage.getItem('netlify-cms-user');
+          if (stored) {
+             console.log("Active Session Detected.");
+          } else {
+             console.log("No active session found.");
+          }
         } catch (e) {
           console.error("Init Error:", e);
-          document.body.innerHTML = '<h2 style="color:red;text-align:center;margin-top:50px;">Error Loading Config: ' + e.message + '</h2>';
+          document.body.innerHTML = '<h2 style="color:red;text-align:center;margin-top:50px;">Config Error: ' + e.message + '</h2>';
         }
       };
     </script>
