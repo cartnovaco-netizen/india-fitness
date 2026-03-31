@@ -175,9 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gymIcon = L.icon({
         iconUrl: 'assets/images/logo_real_2.png',
-        iconSize: [60, 60],
-        iconAnchor: [30, 30],
-        popupAnchor: [0, -30]
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -20]
     });
 
     L.marker([25.5825166, 85.1282286], { icon: gymIcon }).addTo(map)
