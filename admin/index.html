@@ -386,9 +386,24 @@
                 const getRes = await fetch(`https://api.github.com/repos/cartnovaco-netizen/INDIA-FITNESS/contents/_data/${filename}`, { headers });
                 const existingFile = await getRes.json();
                 
-                // 2. Prepare content
+                // 2. Prepare content with sanitization
                 const contentObj = {};
-                contentObj[wrapKey] = sectionToList();
+                
+                // Deep clean all strings before saving
+                const sanitize = (val) => typeof val === 'string' ? val.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, "").trim() : val;
+                const cleanData = JSON.parse(JSON.stringify(sectionToList()));
+                
+                // Recursively clean the data object
+                const deepClean = (obj) => {
+                    for (let key in obj) {
+                        if (typeof obj[key] === 'string') obj[key] = sanitize(obj[key]);
+                        else if (Array.isArray(obj[key])) obj[key] = obj[key].map(v => typeof v === 'string' ? sanitize(v) : v);
+                        else if (typeof obj[key] === 'object' && obj[key] !== null) deepClean(obj[key]);
+                    }
+                };
+                deepClean(cleanData);
+
+                contentObj[wrapKey] = cleanData;
                 const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(contentObj, null, 2))));
 
                 // 3. Update

@@ -283,16 +283,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     contactSubmitBtn.innerText = 'MESSAGE SENT ✓';
                     contactSubmitBtn.classList.add('btn-success');
                     contactForm.reset();
+                    if(iti) iti.setCountry("in"); // Reset phone input too
                     
                     setTimeout(() => {
                         contactSubmitBtn.innerText = originalText;
                         contactSubmitBtn.classList.remove('btn-success');
                     }, 3000);
                 } else {
-                    alert('Oops! ' + data.message);
+                    const errMsg = data.message || "Submission failed.";
+                    alert('Submission Error: ' + errMsg);
                 }
             } catch (error) {
-                alert('Connection error. Please try again later.');
+                alert('Connection error. Please check your internet.');
                 console.error('Web3Forms Error:', error);
             } finally {
                 if(!contactSubmitBtn.classList.contains('btn-success')) {
