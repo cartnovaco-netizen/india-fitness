@@ -3,7 +3,7 @@ backend:
   repo: cartnovaco-netizen/INDIA-FITNESS
   branch: main
   base_url: https://india-fitness.vercel.app
-  auth_endpoint: api/auth
+  auth_endpoint: auth
 
 # Media folder configuration
 media_folder: "assets/images"
