@@ -57,7 +57,7 @@ module.exports = async function handler(req, res) {
               }
             } catch(e) {}
             
-            // Bypass Decap CMS `e.source === this.authWindow` bug by injecting token directly
+            // Bypass Decap CMS 'e.source === this.authWindow' bug by injecting token directly
             // Since we are on the same domain (/api/ callback), we have access to the same localStorage!
             try {
               var userObj = {
