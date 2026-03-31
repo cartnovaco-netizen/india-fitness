@@ -67,20 +67,28 @@ module.exports = async function handler(req, res) {
           if (window.opener) {
             const origin = window.location.origin;
             try {
+              // Standard Decap handshakes
               window.opener.postMessage({
                 source: 'netlify-cms-auth',
                 payload: userObj
               }, origin);
               
               window.opener.postMessage('authorization:github:success:' + JSON.stringify(userObj), origin);
-            } catch (e) { console.error(e); }
 
+              // Direct Memory Injection into parent (Most reliable backup)
+              window.opener.localStorage.setItem("decap-cms-user", JSON.stringify(userObj));
+              window.opener.localStorage.setItem("netlify-cms-user", JSON.stringify(userObj));
+              
+            } catch (e) { console.error("Communication failed:", e); }
+
+            // Allow 2 seconds for parent to process before closing
             setTimeout(function() {
               window.close();
-            }, 1000);
+            }, 2000);
           } else {
-             // If manual refresh is needed
-             document.body.innerHTML += '<p style="color:#ffaa00;">No parent window found. Please refresh the Admin tab manually.</p>';
+             // Fallback for isolated tabs
+             localStorage.setItem("decap-cms-user", JSON.stringify(userObj));
+             document.body.innerHTML += '<p style="color:#ffaa00;">Please refresh the Admin tab manually to log in.</p>';
           }
         })();
       </script>
