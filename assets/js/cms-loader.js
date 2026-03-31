@@ -79,6 +79,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const bonusHtml = plan.bonus ? `<p class="bonus-tag">${plan.bonus}</p>` : '';
                     const btnClass = plan.theme.includes('black-plan') ? 'btn-black' : plan.theme.includes('featured') ? 'btn-primary' : 'btn-outline';
 
+                    const whatsappBase = "https://wa.me/918544007735?text=";
+                    const whatsappMsg = encodeURIComponent(`Hey! I'm interested in the ${plan.title} (${plan.type}) - ${plan.price}.`);
+                    const whatsappUrl = `${whatsappBase}${whatsappMsg}`;
+
                     const card = `
                         <div class="plan-card ${plan.theme || 'tilt-card'}" data-aos="fade-up" data-aos-delay="${delay}">
                             <div class="plan-header">
@@ -90,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <ul class="plan-features">
                                 ${featuresHtml}
                             </ul>
-                            <a href="tel:8544007735" class="btn ${btnClass}">${plan.button_text || 'Join Now'}</a>
+                            <a href="${whatsappUrl}" target="_blank" class="btn ${btnClass}">${plan.button_text || 'Join Now'}</a>
                         </div>
                     `;
                     plansGrid.insertAdjacentHTML('beforeend', card);
