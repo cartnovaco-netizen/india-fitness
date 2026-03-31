@@ -201,7 +201,14 @@
                                 <div class="field"><label>Name</label><input value="${item.name}" onchange="updateItem(${idx}, 'name', this.value)"></div>
                                 <div class="field"><label>Role</label><input value="${item.role}" onchange="updateItem(${idx}, 'role', this.value)"></div>
                                 <div class="field"><label>Experience</label><input value="${item.exp}" onchange="updateItem(${idx}, 'exp', this.value)"></div>
-                                <div class="field"><label>Direct Image Path</label><input value="${item.image}" onchange="updateItem(${idx}, 'image', this.value); render();"></div>
+                                <div class="field">
+                                    <label>Profile Image</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input value="${item.image}" id="img-path-${idx}" onchange="updateItem(${idx}, 'image', this.value); render();" style="flex: 1;">
+                                        <button class="btn" style="background: #333; font-size: 11px;" onclick="document.getElementById('file-input-${idx}').click()">Upload New</button>
+                                        <input type="file" id="file-input-${idx}" style="display:none" onchange="uploadMedia(this.files[0], ${idx})">
+                                    </div>
+                                </div>
                             </div>
                             <div style="width: 150px;">
                                 <label>Preview</label>
@@ -229,7 +236,14 @@
                         <div style="display: flex; gap: 20px;">
                             <div style="flex: 1;">
                                 <div class="field"><label>Caption</label><input value="${item.caption}" onchange="updateItem(${idx}, 'caption', this.value)"></div>
-                                <div class="field"><label>Image Path</label><input value="${item.image}" onchange="updateItem(${idx}, 'image', this.value); render();"></div>
+                                <div class="field">
+                                    <label>Gallery Image</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <input value="${item.image}" id="img-path-${idx}" onchange="updateItem(${idx}, 'image', this.value); render();" style="flex: 1;">
+                                        <button class="btn" style="background: #333; font-size: 11px;" onclick="document.getElementById('file-input-${idx}').click()">Upload Photo</button>
+                                        <input type="file" id="file-input-${idx}" style="display:none" onchange="uploadMedia(this.files[0], ${idx})">
+                                    </div>
+                                </div>
                             </div>
                             <div style="width: 200px;">
                                 <img src="/${item.image}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border:1px solid #333;" onerror="this.src='https://via.placeholder.com/200?text=No+Photo'">
@@ -281,6 +295,50 @@
 
         function updateItem(idx, key, val) {
             sectionToList()[idx][key] = val;
+        }
+
+        async function uploadMedia(file, idx) {
+            if (!file) return;
+            const btn = event.currentTarget.previousElementSibling;
+            const originalText = btn.innerText;
+            btn.innerText = 'Uploading...';
+            btn.disabled = true;
+
+            try {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const base64Content = e.target.result.split(',')[1];
+                    const fileName = `upload_${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+                    const path = `assets/images/${fileName}`;
+
+                    const res = await fetch(`https://api.github.com/repos/cartnovaco-netizen/INDIA-FITNESS/contents/${path}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Upload media: ${fileName}`,
+                            content: base64Content,
+                            branch: 'main'
+                        })
+                    });
+
+                    if (res.ok) {
+                        updateItem(idx, 'image', path);
+                        render();
+                        showToast("Image Uploaded Successfully!");
+                    } else {
+                        alert("Upload failed: " + res.statusText);
+                    }
+                };
+                reader.readAsDataURL(file);
+            } catch (err) {
+                alert("Error during upload: " + err.message);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
         function addSubItem(idx, key, val) {
