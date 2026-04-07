@@ -158,8 +158,88 @@
     font-size: 0.9rem;
 }
 
+/* AI Loading Overlay */
+#ai-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    z-index: 3000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.ai-scanner {
+    width: 150px;
+    height: 150px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 30px;
+    animation: rotate 2s linear infinite;
+}
+
+.ai-scanner::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 15px;
+    height: 15px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.ai-status {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 2px;
+}
+
+/* Diet CTA Card */
+.diet-cta-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--surface-color) 0%, #2a2a2a 100%);
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px dashed var(--primary-color);
+    text-align: center;
+    margin-top: 40px;
+    animation: pulseBorder 2s infinite;
+}
+
+@keyframes pulseBorder {
+    0% { border-color: rgba(230, 57, 70, 0.3); }
+    50% { border-color: rgba(230, 57, 70, 0.8); }
+    100% { border-color: rgba(230, 57, 70, 0.3); }
+}
+
+.diet-cta-card h3 {
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.diet-cta-card p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
 @media print {
-    #main-header, #main-footer, .wizard-container, .btn {
+    #main-header, #main-footer, .wizard-container, .btn, #ai-loading, .diet-cta-card {
         display: none !important;
     }
     .result-container {

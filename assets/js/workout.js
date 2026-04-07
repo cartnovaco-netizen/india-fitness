@@ -104,7 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const time = document.getElementById('time').value;
             const equip = document.getElementById('equipment').value;
 
-            generatePlan(goal, days, time, equip);
+            // AI Simulation Logic
+            const aiLoading = document.getElementById('ai-loading');
+            const statusText = aiLoading.querySelector('.ai-status');
+            const steps = [
+                "ANALYZING YOUR BIOMETRICS...",
+                "CALCULATING OPTIMAL VOLUME...",
+                "SELECTING BEST EXERCISES...",
+                "FINALIZING YOUR AI PLAN..."
+            ];
+
+            aiLoading.style.display = 'flex';
+            
+            let stepIdx = 0;
+            const stepInterval = setInterval(() => {
+                statusText.innerText = steps[stepIdx];
+                stepIdx++;
+                if(stepIdx >= steps.length) clearInterval(stepInterval);
+            }, 800);
+
+            setTimeout(() => {
+                aiLoading.style.display = 'none';
+                generatePlan(goal, days, time, equip);
+            }, 3500);
         });
     }
 
@@ -120,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         daysContainer.innerHTML = '';
         
         plan.forEach(dayInfo => {
-            if(dayInfo.exercises.length === 0) return; // Skip rest days in card display
+            if(dayInfo.exercises.length === 0) return;
 
             const card = document.createElement('div');
             card.className = 'day-card';
@@ -147,6 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             daysContainer.appendChild(card);
         });
+
+        // Add Diet CTA Card
+        const dietCard = document.createElement('div');
+        dietCard.className = 'diet-cta-card';
+        dietCard.innerHTML = `
+            <h3>🥗 Want a Personalized Diet Chart for FREE?</h3>
+            <p>Combine your workout plan with the right nutrition to get 2x faster results. Join the India Fitness family today and get your custom diet plan at no extra cost!</p>
+            <a href="https://wa.me/918544007735?text=Hey!%20I%20just%20generated%20my%20workout%20plan%20on%20your%20website%20and%20I%20want%20the%20FREE%20Diet%20Chart.%20How%20can%20I%20join?" target="_blank" class="btn btn-primary magnetic">CLAIM MY FREE DIET CHART</a>
+        `;
+        daysContainer.appendChild(dietCard);
 
         // Toggle visibility
         wizard.style.display = 'none';
