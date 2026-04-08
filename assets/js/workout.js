@@ -1,7 +1,25 @@
 /**
  * Workout Generator Logic
- * Pre-defined splits and exercise data
+ * Comprehensive splits and exercise database with equipment adaptation
  */
+
+// Exercise Alternatives for different equipment levels
+const exerciseAlternatives = {
+    "Bench Press": { basic: "Dumbbell Press", bodyweight: "Pushups (3xMax)" },
+    "Incline Press": { basic: "Incline DB Press", bodyweight: "Decline Pushups" },
+    "Squats": { basic: "DB Goblet Squats", bodyweight: "Air Squats (3x20)" },
+    "Deadlifts": { basic: "DB RDLs", bodyweight: "Glute Bridges" },
+    "Overhead Press": { basic: "DB Shoulder Press", bodyweight: "Pike Pushups" },
+    "Rows": { basic: "One Arm DB Rows", bodyweight: "Inverted Rows (using table/bar)" },
+    "Lat Pulldowns": { basic: "DB Pullovers", bodyweight: "Superman Pulls" },
+    "Leg Press": { basic: "DB Lunges", bodyweight: "Walking Lunges" },
+    "Leg Curls": { basic: "DB Leg Curls", bodyweight: "Nordic Curls (assisted)" },
+    "Calf Raises": { basic: "Single Leg DB Calf Raises", bodyweight: "Calf Raises" },
+    "Tricep Pushdowns": { basic: "DB Overhead Extension", bodyweight: "Bench Dips" },
+    "Pull-ups": { basic: "DB Rows", bodyweight: "Pull-ups" },
+    "Hammer Curls": { basic: "DB Hammer Curls", bodyweight: "Towel Bicep Curls" },
+    "Cable Flyes": { basic: "DB Flyes", bodyweight: "Wide Pushups" }
+};
 
 const workoutData = {
     muscle: {
@@ -21,56 +39,160 @@ const workoutData = {
                     { name: "Deadlifts", sets: "3x8", desc: "Posterior chain" },
                     { name: "Lat Pulldowns", sets: "3x12", desc: "Back width" },
                     { name: "Leg Press", sets: "3x15", desc: "Quad fatigue" }
+                ]},
+                { day: "Day 4", muscle: "Rest", exercises: [] },
+                { day: "Day 5", muscle: "Full Body C", exercises: [
+                    { name: "Pull-ups", sets: "3xMax", desc: "Upper body pulling" },
+                    { name: "Dumbbell Press", sets: "3x12", desc: "Chest isolation" },
+                    { name: "Lunges", sets: "3x12", desc: "Unilateral leg work" },
+                    { name: "Plank", sets: "3x60s", desc: "Core stability" }
                 ]}
             ],
             "4": [
                 { day: "Day 1", muscle: "Upper Power", exercises: [
-                    { name: "Bench Press", sets: "4x8", desc: "Chest focus" },
-                    { name: "Rows", sets: "4x8", desc: "Back focus" },
-                    { name: "Shoulder Press", sets: "3x10", desc: "Deltoid builder" }
+                    { name: "Bench Press", sets: "4x8", desc: "Heavier loads for chest" },
+                    { name: "Rows", sets: "4x8", desc: "Power pulling" },
+                    { name: "Overhead Press", sets: "3x10", desc: "Vertical pressing" },
+                    { name: "Pull-ups", sets: "3xMax", desc: "Vertical pulling" }
                 ]},
                 { day: "Day 2", muscle: "Lower Power", exercises: [
-                    { name: "Squats", sets: "4x8", desc: "Quad focus" },
-                    { name: "Leg Curls", sets: "3x12", desc: "Hamstring focus" },
+                    { name: "Squats", sets: "4x8", desc: "Quadriceps focus" },
+                    { name: "Deadlifts", sets: "3x8", desc: "Hinge pattern" },
+                    { name: "Leg Curls", sets: "3x12", desc: "Hamstrings" },
                     { name: "Calf Raises", sets: "4x15", desc: "Lower leg" }
+                ]},
+                { day: "Day 3", muscle: "Rest", exercises: [] },
+                { day: "Day 4", muscle: "Upper Hypertrophy", exercises: [
+                    { name: "Incline Press", sets: "3x12", desc: "Upper chest pump" },
+                    { name: "Lat Pulldowns", sets: "3x12", desc: "Back width" },
+                    { name: "Hammer Curls", sets: "3x12", desc: "Arm thickness" },
+                    { name: "Tricep Pushdowns", sets: "3x15", desc: "Tricep volume" }
+                ]},
+                { day: "Day 5", muscle: "Lower Hypertrophy", exercises: [
+                    { name: "Leg Press", sets: "3x15", desc: "Constant tension" },
+                    { name: "Lunges", sets: "3x12", desc: "Glute/Quad focus" },
+                    { name: "Leg Extensions", sets: "3x15", desc: "Quad isolation" },
+                    { name: "Plank", sets: "3x60s", desc: "Core" }
                 ]}
             ],
             "5": [
-                { day: "Day 1", muscle: "Chest & Triceps", exercises: [
-                    { name: "Incline DB Press", sets: "4x12", desc: "" },
-                    { name: "Cable Flyes", sets: "3x15", desc: "" },
-                    { name: "Tricep Pushdowns", sets: "4x12", desc: "" }
+                { day: "Day 1", muscle: "Chest", exercises: [
+                    { name: "Bench Press", sets: "4x10", desc: "" },
+                    { name: "Incline Press", sets: "3x12", desc: "" },
+                    { name: "Cable Flyes", sets: "3x15", desc: "" }
                 ]},
-                { day: "Day 2", muscle: "Back & Biceps", exercises: [
+                { day: "Day 2", muscle: "Back", exercises: [
+                    { name: "Deadlifts", sets: "3x8", desc: "" },
+                    { name: "Rows", sets: "4x10", desc: "" },
+                    { name: "Lat Pulldowns", sets: "3x12", desc: "" }
+                ]},
+                { day: "Day 3", muscle: "Shoulders", exercises: [
+                    { name: "Overhead Press", sets: "4x10", desc: "" },
+                    { name: "Lateral Raises", sets: "4x15", desc: "" }
+                ]},
+                { day: "Day 4", muscle: "Legs", exercises: [
+                    { name: "Squats", sets: "4x10", desc: "" },
+                    { name: "Leg Press", sets: "3x15", desc: "" },
+                    { name: "Leg Curls", sets: "3x12", desc: "" }
+                ]},
+                { day: "Day 5", muscle: "Arms", exercises: [
+                    { name: "Hammer Curls", sets: "3x12", desc: "" },
+                    { name: "Tricep Pushdowns", sets: "3x12", desc: "" }
+                ]}
+            ],
+            "6": [
+                { day: "Day 1", muscle: "Push A", exercises: [
+                    { name: "Bench Press", sets: "4x8", desc: "" },
+                    { name: "Overhead Press", sets: "3x10", desc: "" },
+                    { name: "Cable Flyes", sets: "3x15", desc: "" }
+                ]},
+                { day: "Day 2", muscle: "Pull A", exercises: [
                     { name: "Deadlifts", sets: "3x8", desc: "" },
                     { name: "Pull-ups", sets: "3xMax", desc: "" },
+                    { name: "Rows", sets: "3x12", desc: "" }
+                ]},
+                { day: "Day 3", muscle: "Legs A", exercises: [
+                    { name: "Squats", sets: "4x8", desc: "" },
+                    { name: "Leg Curls", sets: "3x12", desc: "" },
+                    { name: "Calf Raises", sets: "4x20", desc: "" }
+                ]},
+                { day: "Day 4", muscle: "Push B", exercises: [
+                    { name: "Incline Press", sets: "3x12", desc: "" },
+                    { name: "Lateral Raises", sets: "4x15", desc: "" },
+                    { name: "Tricep Pushdowns", sets: "3x12", desc: "" }
+                ]},
+                { day: "Day 5", muscle: "Pull B", exercises: [
+                    { name: "Lat Pulldowns", sets: "3x12", desc: "" },
+                    { name: "Face Pulls", sets: "3x15", desc: "" },
                     { name: "Hammer Curls", sets: "3x12", desc: "" }
+                ]},
+                { day: "Day 6", muscle: "Legs B", exercises: [
+                    { name: "Leg Press", sets: "3x15", desc: "" },
+                    { name: "Lunges", sets: "3x12", desc: "" },
+                    { name: "Plank", sets: "3x60s", desc: "" }
                 ]}
             ]
         }
     },
     strength: {
         title: "Power & Strength Split",
-        desc: "Focused on compound movements and nervous system adaptation.",
+        desc: "Focused on compound movements and nervous system adaptation for maximum output.",
         plans: {
             "3": [
-                { day: "Day 1", muscle: "Heavy Squat Day", exercises: [
-                    { name: "Squats", sets: "5x5", desc: "Main lift" },
-                    { name: "Overhead Press", sets: "3x5", desc: "Support lift" },
-                    { name: "Chinups", sets: "3x8", desc: "Pulling power" }
+                { day: "Day 1", muscle: "Squat Priority", exercises: [
+                    { name: "Squats", sets: "5x5", desc: "Heavy core lift" },
+                    { name: "Bench Press", sets: "3x8", desc: "Support push" },
+                    { name: "Rows", sets: "3x8", desc: "Stability pull" }
+                ]},
+                { day: "Day 2", muscle: "Rest", exercises: [] },
+                { day: "Day 3", muscle: "Bench Priority", exercises: [
+                    { name: "Bench Press", sets: "5x5", desc: "Heavy push" },
+                    { name: "Overhead Press", sets: "3x8", desc: "Support shoulder" },
+                    { name: "Lat Pulldowns", sets: "3x8", desc: "Pulling" }
+                ]},
+                { day: "Day 4", muscle: "Rest", exercises: [] },
+                { day: "Day 5", muscle: "Deadlift Priority", exercises: [
+                    { name: "Deadlifts", sets: "5x5", desc: "Heavy hinge" },
+                    { name: "Squats", sets: "3x8", desc: "Support legs" },
+                    { name: "Rows", sets: "3x8", desc: "Back power" }
+                ]}
+            ],
+            "4": [
+                { day: "Day 1", muscle: "Max Effort Upper", exercises: [
+                    { name: "Bench Press", sets: "5x5", desc: "" },
+                    { name: "Rows", sets: "3x8", desc: "" }
+                ]},
+                { day: "Day 2", muscle: "Max Effort Lower", exercises: [
+                    { name: "Squats", sets: "5x5", desc: "" },
+                    { name: "Deadlifts", sets: "5x3", desc: "" }
+                ]},
+                { day: "Day 3", muscle: "Rest", exercises: [] },
+                { day: "Day 4", muscle: "Dynamic Upper", exercises: [
+                    { name: "Overhead Press", sets: "5x5", desc: "" },
+                    { name: "Pull-ups", sets: "3x8", desc: "" }
+                ]},
+                { day: "Day 5", muscle: "Dynamic Lower", exercises: [
+                    { name: "Deadlifts", sets: "5x5", desc: "" },
+                    { name: "Leg Press", sets: "3x10", desc: "" }
                 ]}
             ]
         }
     },
     fatloss: {
         title: "Metabolic Shred Split",
-        desc: "High-intensity circuits to keep your heart rate up and calories burning.",
+        desc: "High-intensity circuits to keep your heart rate up and calories burning long after you leave.",
         plans: {
             "4": [
-                { day: "Day 1", muscle: "Metabolic Conditioning", exercises: [
-                    { name: "Burpees", sets: "4x15", desc: "" },
-                    { name: "Mountain Climbers", sets: "4x30s", desc: "" },
-                    { name: "Kettlebell Swings", sets: "4x20", desc: "" }
+                { day: "Day 1", muscle: "Full Body Circuit A", exercises: [
+                    { name: "Squats", sets: "4x15", desc: "Fast pace" },
+                    { name: "Pushups", sets: "4xMax", desc: "" },
+                    { name: "Mountain Climbers", sets: "4x45s", desc: "" }
+                ]},
+                { day: "Day 2", muscle: "Rest", exercises: [] },
+                { day: "Day 3", muscle: "Full Body Circuit B", exercises: [
+                    { name: "Burpees", sets: "4x12", desc: "" },
+                    { name: "Lunges", sets: "4x15", desc: "" },
+                    { name: "Plank", sets: "4x60s", desc: "" }
                 ]}
             ]
         }
@@ -111,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "ANALYZING YOUR BIOMETRICS...",
                 "CALCULATING OPTIMAL VOLUME...",
                 "SELECTING BEST EXERCISES...",
+                "ADAPTING FOR " + equip.toUpperCase() + " EQUIPMENT...",
                 "FINALIZING YOUR AI PLAN..."
             ];
 
@@ -118,10 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let stepIdx = 0;
             const stepInterval = setInterval(() => {
-                statusText.innerText = steps[stepIdx];
-                stepIdx++;
-                if(stepIdx >= steps.length) clearInterval(stepInterval);
-            }, 800);
+                if(stepIdx < steps.length) {
+                    statusText.innerText = steps[stepIdx];
+                    stepIdx++;
+                } else {
+                    clearInterval(stepInterval);
+                }
+            }, 700);
 
             setTimeout(() => {
                 aiLoading.style.display = 'none';
@@ -133,34 +259,74 @@ document.addEventListener('DOMContentLoaded', () => {
     function generatePlan(goal, days, time, equip) {
         // Selection Logic
         const goalData = workoutData[goal] || workoutData.muscle;
-        let plan = goalData.plans[days] || goalData.plans["3"] || fallbackPlan;
+        let originalPlan = goalData.plans[days] || goalData.plans["4"] || goalData.plans["3"] || fallbackPlan;
 
         // UI Updates
         planTitle.innerText = goalData.title;
-        planDesc.innerText = goalData.desc + ` (${time} min, ${equip} equipment)`;
+        planDesc.innerText = goalData.desc + ` Optimized for ${time} min per session.`;
         
         daysContainer.innerHTML = '';
         
-        plan.forEach(dayInfo => {
+        originalPlan.forEach(dayInfo => {
             if(dayInfo.exercises.length === 0) return;
 
             const card = document.createElement('div');
             card.className = 'day-card';
             card.setAttribute('data-aos', 'fade-up');
             
-            let exercisesHTML = dayInfo.exercises.map(ex => `
-                <li class="exercise-item">
-                    <div class="ex-info">
-                        <h4>${ex.name}</h4>
-                        <p>${ex.desc}</p>
-                    </div>
-                    <div class="ex-sets">${ex.sets}</div>
-                </li>
-            `).join('');
+            let exercisesHTML = dayInfo.exercises.map(ex => {
+                // Adapt exercise based on equipment
+                let exerciseName = ex.name;
+                let exerciseDesc = ex.desc;
+                let sets = ex.sets;
+
+                if (equip !== 'full' && exerciseAlternatives[ex.name]) {
+                    if (equip === 'bodyweight') {
+                        exerciseName = exerciseAlternatives[ex.name].bodyweight;
+                    } else if (equip === 'basic') {
+                        exerciseName = exerciseAlternatives[ex.name].basic;
+                    }
+                }
+
+                // Adapt volume based on time
+                if (parseInt(time) <= 30) {
+                    // Reduce sets for 30 min
+                    sets = sets.replace(/(\d+)x/, (match, p1) => {
+                        const s = Math.max(2, parseInt(p1) - 1);
+                        return s + "x";
+                    });
+                } else if (parseInt(time) >= 90) {
+                    // Increase sets for 90 min
+                    sets = sets.replace(/(\d+)x/, (match, p1) => {
+                        const s = parseInt(p1) + 1;
+                        return s + "x";
+                    });
+                }
+
+                return `
+                    <li class="exercise-item">
+                        <div class="ex-info">
+                            <h4>${exerciseName}</h4>
+                            <p>${exerciseDesc || 'Focus on controlled movement and tempo.'}</p>
+                        </div>
+                        <div class="ex-sets">${sets}</div>
+                    </li>
+                `;
+            }).join('');
+
+            // Icons based on Muscle Group
+            let icon = 'dumbbell';
+            const m = dayInfo.muscle.toLowerCase();
+            if(m.includes('chest')) icon = 'shield-halved';
+            if(m.includes('back')) icon = 'arrows-up-down';
+            if(m.includes('leg')) icon = 'person-running';
+            if(m.includes('shoulder')) icon = 'up-down-left-right';
+            if(m.includes('arm')) icon = 'hand-fist';
+            if(m.includes('core') || m.includes('shred')) icon = 'fire';
 
             card.innerHTML = `
                 <div class="day-header">
-                    <h3>${dayInfo.day}</h3>
+                    <h3><i class="fas fa-${icon}"></i> ${dayInfo.day}</h3>
                     <span class="muscle-group">${dayInfo.muscle}</span>
                 </div>
                 <ul class="exercise-list">
@@ -170,13 +336,32 @@ document.addEventListener('DOMContentLoaded', () => {
             daysContainer.appendChild(card);
         });
 
+        // Add Tips Card
+        const tipsCard = document.createElement('div');
+        tipsCard.className = 'tips-card';
+        tipsCard.innerHTML = `
+            <h3><i class="fas fa-lightbulb"></i> PRO TIPS FOR ${goal.toUpperCase()}</h3>
+            <ul class="tips-list">
+                <li><i class="fas fa-glass-water"></i> Drink at least 4 liters of water daily.</li>
+                <li><i class="fas fa-sleep"></i> Aim for 7-9 hours of quality sleep.</li>
+                <li><i class="fas fa-check"></i> Prioritize form over heavy weights to prevent injury.</li>
+                <li><i class="fas fa-plate-wheat"></i> Consistency in nutrition is 70% of the battle.</li>
+            </ul>
+        `;
+        daysContainer.appendChild(tipsCard);
+
         // Add Diet CTA Card
         const dietCard = document.createElement('div');
         dietCard.className = 'diet-cta-card';
         dietCard.innerHTML = `
-            <h3>🥗 Want a Personalized Diet Chart for FREE?</h3>
-            <p>Combine your workout plan with the right nutrition to get 2x faster results. Join the India Fitness family today and get your custom diet plan at no extra cost!</p>
-            <a href="https://wa.me/918544007735?text=Hey!%20I%20just%20generated%20my%20workout%20plan%20on%20your%20website%20and%20I%20want%20the%20FREE%20Diet%20Chart.%20How%20can%20I%20join?" target="_blank" class="btn btn-primary magnetic">CLAIM MY FREE DIET CHART</a>
+            <div class="diet-content">
+                <span class="diet-badge">LIMITED OFFER</span>
+                <h3>🥗 Personalized Diet Chart (₹0)</h3>
+                <p>You've generated your ${goalData.title}. Now get the nutrition plan that powers it. Join India Fitness today and get your custom diet chart for FREE!</p>
+                <div class="diet-actions">
+                    <a href="https://wa.me/918544007735?text=Hey!%20I%20just%20generated%20my%20${goalData.title}%20on%20the%20website%20and%20I%20want%20the%20FREE%20Diet%20Chart.%20How%20can%20I%20join?" target="_blank" class="btn btn-primary magnetic">CLAIM MY FREE DIET CHART</a>
+                </div>
+            </div>
         `;
         daysContainer.appendChild(dietCard);
 
@@ -192,3 +377,4 @@ document.addEventListener('DOMContentLoaded', () => {
         printBtn.addEventListener('click', () => window.print());
     }
 });
+

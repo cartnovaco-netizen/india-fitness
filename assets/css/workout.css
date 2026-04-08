@@ -110,8 +110,23 @@
 }
 
 .day-header h3 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.day-header h3 i {
+    color: var(--primary-color);
+    font-size: 1rem;
+    background: rgba(230, 57, 70, 0.1);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .day-header .muscle-group {
@@ -129,11 +144,12 @@
 }
 
 .exercise-item {
-    padding: 12px 0;
+    padding: 15px 0;
     border-bottom: 1px solid #2a2a2a;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 15px;
 }
 
 .exercise-item:last-child {
@@ -141,21 +157,26 @@
 }
 
 .ex-info h4 {
-    font-size: 1rem;
+    font-size: 1.05rem;
     margin-bottom: 4px;
-    color: var(--text-primary);
+    color: var(--white);
 }
 
 .ex-info p {
     font-size: 0.85rem;
     color: var(--text-secondary);
+    line-height: 1.4;
 }
 
 .ex-sets {
     text-align: right;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--primary-color);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    background: rgba(230, 57, 70, 0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
 }
 
 /* AI Loading Overlay */
@@ -165,7 +186,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(10, 10, 10, 0.98);
     z-index: 3000;
     display: none;
     flex-direction: column;
@@ -175,25 +196,15 @@
 }
 
 .ai-scanner {
-    width: 150px;
-    height: 150px;
-    border: 2px solid var(--primary-color);
+    width: 120px;
+    height: 120px;
+    border: 3px solid #222;
+    border-top: 3px solid var(--primary-color);
     border-radius: 50%;
     position: relative;
     margin-bottom: 30px;
-    animation: rotate 2s linear infinite;
-}
-
-.ai-scanner::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    width: 15px;
-    height: 15px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    box-shadow: 0 0 20px var(--primary-color);
+    animation: rotate 1s linear infinite;
+    box-shadow: 0 0 30px rgba(230, 57, 70, 0.2);
 }
 
 @keyframes rotate {
@@ -202,44 +213,126 @@
 }
 
 .ai-status {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--white);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Tips Card */
+.tips-card {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 30px;
+    border: 1px solid #333;
+}
+
+.tips-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tips-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .tips-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tips-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.tips-list li i {
+    color: var(--primary-color);
+    width: 20px;
 }
 
 /* Diet CTA Card */
 .diet-cta-card {
     grid-column: 1 / -1;
-    background: linear-gradient(135deg, var(--surface-color) 0%, #2a2a2a 100%);
-    padding: 40px;
-    border-radius: 12px;
-    border: 2px dashed var(--primary-color);
-    text-align: center;
+    background: linear-gradient(135deg, #111 0%, #222 100%);
+    padding: 50px;
+    border-radius: 15px;
+    border: 2px solid #333;
+    position: relative;
+    overflow: hidden;
     margin-top: 40px;
-    animation: pulseBorder 2s infinite;
+    text-align: center;
 }
 
-@keyframes pulseBorder {
-    0% { border-color: rgba(230, 57, 70, 0.3); }
-    50% { border-color: rgba(230, 57, 70, 0.8); }
-    100% { border-color: rgba(230, 57, 70, 0.3); }
+.diet-cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(230, 57, 70, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.diet-content {
+    position: relative;
+    z-index: 1;
+}
+
+.diet-badge {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
 }
 
 .diet-cta-card h3 {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     color: var(--white);
     margin-bottom: 15px;
+    font-family: var(--font-heading);
 }
 
 .diet-cta-card p {
     color: var(--text-secondary);
-    margin-bottom: 25px;
+    margin: 0 auto 30px;
+    font-size: 1.1rem;
+    max-width: 700px;
+}
+
+.diet-actions .btn {
+    padding: 18px 40px;
     font-size: 1.1rem;
 }
 
 @media print {
-    #main-header, #main-footer, .wizard-container, .btn, #ai-loading, .diet-cta-card {
+    #main-header, #main-footer, .wizard-container, .btn, #ai-loading, .diet-cta-card, .tips-card {
         display: none !important;
     }
     .result-container {
@@ -250,7 +343,20 @@
         color: black;
     }
     .day-card {
-        border-color: #000;
+        border: 1px solid #ddd;
+        border-left: 5px solid black;
+        box-shadow: none;
+        margin-bottom: 20px;
         break-inside: avoid;
     }
+    .day-header h3 i {
+        display: none;
+    }
+    .day-header h3 {
+        color: black;
+    }
+    .ex-info h4 {
+        color: black;
+    }
 }
+
