@@ -1,67 +1,23 @@
-const CACHE_NAME = 'india-fitness-v2';
-const ASSETS = [
-    './',
-    './index.html',
-    './plans.html',
-    './workout.html',
-    './bmi.html',
-    './assets/css/style.css',
-    './assets/css/workout.css',
-    './assets/js/main.js',
-    './assets/js/workout.js',
-    './assets/js/cms-loader.js',
-    './assets/images/logo.png',
-    './assets/images/logo_real_2.png',
-    'https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-];
+// Service Worker Kill-Switch
+// This script unregisters the service worker and clears all associated caches.
 
-// Install Event
 self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS);
-        })
-    );
-    self.skipWaiting();
+    self.skipWaiting(); // Force the waiting service worker to become the active service worker
 });
 
-// Activate Event
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((keys) => {
+        caches.keys().then((cacheNames) => {
             return Promise.all(
-                keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+                cacheNames.map((cacheName) => {
+                    console.log('Kill-switch: Deleting cache', cacheName);
+                    return caches.delete(cacheName);
+                })
             );
-        })
-    );
-    self.clients.claim();
-});
-
-// Fetch Event (Stale-While-Revalidate Strategy)
-self.addEventListener('fetch', (event) => {
-    // Only handle GET requests
-    if (event.request.method !== 'GET') return;
-
-    event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
-                // Check if we received a valid response
-                if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                    return networkResponse;
-                }
-                
-                // Clone the response to store in cache
-                const responseToCache = networkResponse.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
-                });
-                return networkResponse;
-            }).catch(() => {
-                // If network fails and no cache, you could return an offline page here
-            });
-            
-            return cachedResponse || fetchPromise;
+        }).then(() => {
+            return self.registration.unregister();
+        }).then(() => {
+            console.log('Kill-switch: Service Worker unregistered.');
         })
     );
 });
