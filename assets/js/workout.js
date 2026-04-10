@@ -404,20 +404,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const goalData = workoutData[goal] || workoutData.muscle;
         let originalPlan = goalData.plans[days] || goalData.plans["4"] || goalData.plans["3"] || fallbackPlan;
         
+        // Standardize to a 7-day week schedule (Professional Standard)
+        const weeklySchedule = coach_distributeWeek(originalPlan, days);
+
         const inputs = { goal, days, time, equip };
-        renderPlan(originalPlan, goalData, inputs);
+        renderPlan(weeklySchedule, goalData, inputs);
 
         if (shouldSave) {
             localStorage.setItem('indiaFitnessWorkoutPlan', JSON.stringify({
-                plan: originalPlan,
+                plan: weeklySchedule,
                 goalData: goalData,
                 inputs: inputs
             }));
         }
     }
 
+    // Helper to distribute training days across a 7-day week logically
+    function coach_distributeWeek(trainingDays, dayCount) {
+        const week = Array(7).fill(null).map((_, i) => ({ day: `Day ${i+1}`, muscle: "Rest", exercises: [] }));
+        const count = parseInt(dayCount);
+        
+        // Mapping for logical training day distribution
+        const schema = {
+            "3": [0, 2, 4],       // Mon, Wed, Fri
+            "4": [0, 1, 3, 4],    // Mon, Tue, Thu, Fri
+            "5": [0, 1, 2, 4, 5], // Mon, Tue, Wed, Fri, Sat
+            "6": [0, 1, 2, 3, 4, 5] // Mon - Sat
+        }[dayCount] || [0, 1, 2, 3, 4, 5, 6];
+
+        trainingDays.forEach((td, idx) => {
+            if (schema[idx] !== undefined) {
+                const dayIdx = schema[idx];
+                week[dayIdx] = { ...td, day: `Day ${dayIdx + 1}` };
+            }
+        });
+
+        return week;
+    }
+
     function renderPlan(originalPlan, goalData, inputs, silent = false) {
-        // Deep clone the plan to avoid modifying source workoutData (fixes the "8 sets" bug)
+        // Deep clone the plan to avoid modifying source workoutData
         const planToRender = JSON.parse(JSON.stringify(originalPlan));
         
         const { goal, days, time, equip } = inputs;
@@ -481,36 +507,53 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
+                    // Scientific Protocol logic based on Goal and Duration
+                    let repRange = "8-12";
+                    let restTime = "60s";
+                    let intensityNote = "Controlled tempo.";
+
+                    if (goal === 'strength') {
+                        repRange = "3-6";
+                        restTime = duration >= 60 ? "120-180s" : "90s";
+                        intensityNote = "Maximum force on concentric.";
+                    } else if (goal === 'fatloss') {
+                        repRange = "15-20";
+                        restTime = "30-45s";
+                        intensityNote = "Keep heart rate elevated.";
+                    }
+
                     // Master Scaling Logic (Coach Grade)
                     const isCompound = compoundExercises.includes(ex.name);
                     
                     if (duration <= 30) {
-                        // Efficiency Strategy: Reduce volume, maintain intensity
-                        sets = sets.replace(/(\d+)x/, (match, p1) => {
-                            const s = isCompound ? 3 : 2; // Capping volume for 30 min
-                            return s + "x";
-                        });
+                        sets = isCompound ? "3x" : "2x";
                         method = "EXPRESS CIRCUIT";
                         if (exIndex % 2 !== 0 && exIndex > 0) method = "SUPERSET";
                     } else if (duration >= 90) {
-                        // High Volume Strategy: Add one set (max 5) or add intensity method
                         sets = sets.replace(/(\d+)x/, (match, p1) => {
                             let s = parseInt(p1);
-                            if (s < 5) s += 1; // Don't exceed 5 sets unless expert
+                            if (s < 5) s += 1;
                             return s + "x";
                         });
                         
                         if (isCompound) {
                             method = "TIME-UNDER-TENSION";
-                            if (exIndex === 0) method = "CLUSTER SETS (3x3+3)";
+                            if (exIndex === 0) {
+                                method = "CLUSTER SETS";
+                                intensityNote = "Rest 10-15s between 3-rep clusters.";
+                            }
                         } else {
                             method = "REST-PAUSE (RP)";
-                            if (exIndex === dayInfo.exercises.length - 1) method = "DROPSET TO FAILURE";
+                            if (exIndex === dayInfo.exercises.length - 1) {
+                                method = "DROPSET TO FAILURE";
+                                intensityNote = "Drop weight 20% and continue for max reps.";
+                            }
                         }
                     } else {
-                        // Standard volume (45-60m) - Use as is from DB
-                        method = isCompound ? "STRENGTH PRIORITY" : "HYPERTROPHY FOCUS";
+                        method = isCompound ? "POWER FOCUS" : "VOLUME FOCUS";
                     }
+
+                    const finalSets = sets.includes('x') ? sets.split('x')[0] + 'x' + repRange : sets;
 
                     return `
                         <li class="exercise-item ${method ? 'has-method' : ''}">
@@ -519,9 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <h4>${exerciseName}</h4>
                                     ${method ? `<span class="method-badge">${method}</span>` : ''}
                                 </div>
-                                <p>${exerciseDesc || 'Focus on controlled movement and tempo.'}</p>
+                                <p>${exerciseDesc || intensityNote}</p>
+                                <div class="ex-rest"><i class="fas fa-clock"></i> Rest: ${restTime}</div>
                             </div>
-                            <div class="ex-sets">${sets}</div>
+                            <div class="ex-sets">${finalSets}</div>
                         </li>
                     `;
                 }).join('');

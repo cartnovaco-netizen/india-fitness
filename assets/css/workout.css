@@ -226,6 +226,22 @@
     background: rgba(230, 57, 70, 0.05);
     padding: 4px 8px;
     border-radius: 4px;
+    min-width: 60px;
+}
+
+.ex-rest {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+}
+
+.ex-rest i {
+    font-size: 0.7rem;
+    color: #555;
 }
 
 /* AI Loading Overlay */
