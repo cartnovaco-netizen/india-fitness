@@ -365,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const goal = document.getElementById('goal').value;
             const days = document.getElementById('days').value;
+            const splitPref = document.getElementById('splitPreference').value;
             const time = document.getElementById('time').value;
             const equip = document.getElementById('equipment').value;
 
@@ -393,21 +394,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 aiLoading.style.display = 'none';
-                const inputs = { goal, days, time, equip };
-                generatePlan(goal, days, time, equip, true); // true means save to storage
+                const inputs = { goal, days, time, equip, splitPref };
+                generatePlan(goal, days, time, equip, splitPref, true); // true means save to storage
             }, 3500);
         });
     }
 
-    function generatePlan(goal, days, time, equip, shouldSave = false) {
+    function generatePlan(goal, days, time, equip, splitPref = "2", shouldSave = false) {
         // Selection Logic
         const goalData = workoutData[goal] || workoutData.muscle;
-        let originalPlan = goalData.plans[days] || goalData.plans["4"] || goalData.plans["3"] || fallbackPlan;
         
+        // Intelligent Split Selection
+        let originalPlan;
+        const requestedDays = days;
+        
+        // If they want 1 body part (Bro Split), try to find a 5 or 6 day plan
+        if (splitPref === "1") {
+            originalPlan = goalData.plans["5"] || goalData.plans["6"];
+        } 
+        // If they want 3+ parts (Full Body), look for 3 day plans
+        else if (splitPref === "3") {
+            originalPlan = goalData.plans["3"];
+        }
+        // Default (2 parts) or fallback: use the exact day count they requested
+        else {
+            originalPlan = goalData.plans[days] || goalData.plans["4"] || goalData.plans["3"] || fallbackPlan;
+        }
+
         // Standardize to a 7-day week schedule (Professional Standard)
         const weeklySchedule = coach_distributeWeek(originalPlan, days);
 
-        const inputs = { goal, days, time, equip };
+        const inputs = { goal, days, time, equip, splitPref };
         renderPlan(weeklySchedule, goalData, inputs);
 
         if (shouldSave) {
@@ -446,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Deep clone the plan to avoid modifying source workoutData
         const planToRender = JSON.parse(JSON.stringify(originalPlan));
         
-        const { goal, days, time, equip } = inputs;
+        const { goal, days, time, equip, splitPref } = inputs;
         const duration = parseInt(time);
 
         // UI Updates for Main Results
@@ -457,7 +474,16 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (duration >= 90) subTitle = "🛡️ Optimized Volume: Advanced growth and hypertrophy focus (90 min).";
         else subTitle = "⚡ Standard Performance: Balanced volume and recovery (45-60 min).";
         
+        // Add split style info to subtitle
+        const splitText = {
+            "1": "Single Muscle Focus (1 part)",
+            "2": "Standard Split (2 parts)",
+            "3": "Full Body Intensity (3+ parts)"
+        }[splitPref] || "Custom Split";
+        subTitle += ` | Mode: ${splitText}`;
+
         if (planDesc) planDesc.innerText = subTitle;
+
         
         if (daysContainer) {
             daysContainer.innerHTML = '';
@@ -593,10 +619,21 @@ document.addEventListener('DOMContentLoaded', () => {
             scheduleBar.innerHTML = barHTML;
             daysContainer.prepend(scheduleBar);
 
-            // Add Tips Card
+            // Add Trainer's Note Card based on split/frequency efficiency
+            let trainersNote = "";
+            const dayNum = parseInt(days);
+            if (splitPref === "1" && dayNum < 5) {
+                trainersNote = "⚠️ <strong>TRAINER'S NOTE:</strong> You chose to train 1 body part per session but only " + days + " days per week. This split may leave some muscle groups untrained. Consider increasing to 5+ days for this specific focus.";
+            } else if (splitPref === "3" && dayNum > 4) {
+                trainersNote = "⚠️ <strong>TRAINER'S NOTE:</strong> Full Body training " + days + " days a week is very high frequency. Ensure your nutrition and sleep are elite to recover from this volume!";
+            } else {
+                trainersNote = "✅ <strong>TRAINER'S NOTE:</strong> Your " + days + "-day frequency is well-paired with a " + splitText + " focus for optimal recovery.";
+            }
+
             const tipsCard = document.createElement('div');
             tipsCard.className = 'tips-card';
             tipsCard.innerHTML = `
+                <div class="trainers-note">${trainersNote}</div>
                 <h3><i class="fas fa-lightbulb"></i> PRO TIPS FOR ${goal.toUpperCase()}</h3>
                 <ul class="tips-list">
                     <li><i class="fas fa-glass-water"></i> Drink at least 4 liters of water daily.</li>
