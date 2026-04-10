@@ -195,53 +195,78 @@ nav {
     letter-spacing: 2px;
 }
 
-/* Header Navigation */
-.nav-links {
-    display: flex;
-    gap: 35px;
-    align-items: center;
-    margin: 0 auto; /* Center on desktop */
-}
-
-.nav-links a {
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    color: var(--white);
-    letter-spacing: 1px;
-    position: relative;
-    transition: var(--transition-fast);
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background: var(--primary-color);
-    transition: var(--transition-fast);
-}
-
-.nav-links a:hover::after {
-    width: 100%;
-}
-
 .nav-links a:hover {
     color: var(--primary-color);
 }
 
+/* Elite Side-Drawer (Minimalist Overhaul) */
+.nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden off-screen right */
+    width: 350px;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 100px 40px;
+    gap: 30px;
+    z-index: 2800;
+    transition: all 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+    margin: 0;
+}
+
+.nav-links.active {
+    right: 0;
+}
+
+.nav-links a {
+    font-size: 1.2rem;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+}
+
+.nav-links a::after {
+    display: none; /* Remove desktop underline */
+}
+
+/* Toggle Trigger */
 .menu-toggle {
-    display: none; /* Hidden on desktop */
+    display: flex !important; /* Visible on all screen sizes now */
+    align-items: center;
+    justify-content: center;
     font-size: 1.8rem;
     cursor: pointer;
     color: var(--white);
-    z-index: 2500; /* Ensure it stays above everything including the drawer */
+    z-index: 3100; /* Above Header */
     transition: var(--transition-fast);
     padding: 10px;
-    position: relative;
 }
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2500;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-medium);
+    backdrop-filter: blur(5px);
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 .menu-toggle:hover {
     color: var(--primary-color);

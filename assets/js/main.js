@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Side Drawer Navigation Logic
+    // 4. Global Side Drawer Navigation
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -73,11 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const icon = menuToggle.querySelector('i');
             if (icon) {
                 if (navLinks.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
+                    icon.classList.replace('fa-bars', 'fa-times');
                 } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
+                    icon.classList.replace('fa-times', 'fa-bars');
                 }
             }
         };
@@ -85,12 +83,27 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.addEventListener('click', toggleMenu);
         overlay.addEventListener('click', toggleMenu);
         
+        // Link behavior in drawer
         const links = navLinks.querySelectorAll('a');
         links.forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) toggleMenu();
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    if (navLinks.classList.contains('active')) toggleMenu();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                } else if (navLinks.classList.contains('active')) {
+                    toggleMenu();
+                }
             });
         });
+
 
         // 4.1 Global Plan Loader for Drawer Summary
         const savedPlan = localStorage.getItem('indiaFitnessWorkoutPlan');

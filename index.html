@@ -40,23 +40,27 @@
     <header id="main-header">
         <nav class="container">
             <div class="logo">
-                <a href="/">
+                <a href="index.html">
                     <img src="assets/images/logo.png" alt="India Fitness">
                     <span>INDIA FITNESS</span>
                 </a>
             </div>
             
+            <div class="header-actions">
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="workout.html">Workout Plan</a></li>
                 <li><a href="bmi.html">BMI Calculator</a></li>
-                <li><a href="#about">About Us</a></li>
+                <li><a href="plans.html">Membership Plans</a></li>
+                <li><a href="index.html#about">About Us</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
-
-
-
-                <li class="mobile-only"><a href="https://wa.me/918544007735" target="_blank" class="accent-red">Join Now</a></li>
-                <!-- Dynamic Workout Summary -->
+                
+                <!-- Dynamic Workout Summary inside Drawer -->
                 <li id="drawer-summary-container" style="display: none;">
                     <div class="drawer-summary">
                         <div class="summary-header">
@@ -71,13 +75,6 @@
                     </div>
                 </li>
             </ul>
-
-            <div class="header-actions">
-                <a href="https://wa.me/918544007735" target="_blank" class="cta-nav mobile-hide">Join Now</a>
-                <div class="menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </div>
         </nav>
     </header>
 
@@ -93,9 +90,7 @@
                 </div>
                 <div class="hero-btns animate-text">
                     <a href="https://wa.me/918544007735?text=Hey%20India%20Fitness!%20I%20just%20saw%20your%20website%20and%20I%20want%20to%20join%20the%20TOP%201%20GYM%20in%20Patna.%20Please%20share%20the%20details!" target="_blank" class="btn btn-primary magnetic">JOIN NOW</a>
-                    <a href="https://wa.me/918544007735?text=Hey%20India%20Fitness!%20I%20want%20to%20know%20more%20about%20your%20membership%20plans." target="_blank" class="btn btn-secondary magnetic">VIEW PLANS</a>
-
-
+                    <a href="plans.html" class="btn btn-secondary magnetic">VIEW PLANS</a>
                 </div>
             </div>
             <div class="scroll-down">
@@ -394,8 +389,12 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- intl-tel-input JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
     <script src="assets/js/cms-loader.js"></script>
-    <script src="assets/js/finder-quiz.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 
