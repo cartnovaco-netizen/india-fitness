@@ -412,10 +412,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderPlan(originalPlan, goalData, inputs, silent = false) {
         const { goal, days, time, equip } = inputs;
+        const duration = parseInt(time);
 
         // UI Updates for Main Results
         if (planTitle) planTitle.innerText = goalData.title;
-        if (planDesc) planDesc.innerText = goalData.desc + ` Optimized for ${time} min per session.`;
+        
+        let subTitle = goalData.desc;
+        if (duration <= 30) subTitle = "🚀 Metabolic Express: High intensity, minimal rest.";
+        else if (duration >= 90) subTitle = "🛡️ Optimized Volume: Advanced growth and hypertrophy focus.";
+        else subTitle = "⚡ Standard Performance: Balanced volume and recovery.";
+        
+        if (planDesc) planDesc.innerText = subTitle;
         
         if (daysContainer) {
             daysContainer.innerHTML = '';
@@ -423,18 +430,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Always build the plan DOM so it's ready when 'VIEW FULL PLAN' is clicked
         if (daysContainer) {
-            originalPlan.forEach(dayInfo => {
-                if(dayInfo.exercises.length === 0) return;
-
+            originalPlan.forEach((dayInfo, index) => {
                 const card = document.createElement('div');
                 card.className = 'day-card';
                 card.setAttribute('data-aos', 'fade-up');
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                // Handle Rest Days
+                if(dayInfo.exercises.length === 0) {
+                    card.classList.add('rest-day-card');
+                    card.innerHTML = `
+                        <div class="day-header">
+                            <h3><i class="fas fa-bed"></i> ${dayInfo.day}</h3>
+                            <span class="muscle-group">REST & RECOVERY</span>
+                        </div>
+                        <div class="rest-content">
+                            <p>Proper recovery is vital for muscle growth and performance. Focus on:</p>
+                            <ul>
+                                <li>✨ Active stretching or light walking</li>
+                                <li>💧 Extra hydration (3.5L+)</li>
+                                <li>😴 8 hours of quality sleep</li>
+                            </ul>
+                        </div>
+                    `;
+                    daysContainer.appendChild(card);
+                    return;
+                }
                 
-                let exercisesHTML = dayInfo.exercises.map(ex => {
+                let exercisesHTML = dayInfo.exercises.map((ex, exIndex) => {
                     // Adapt exercise based on equipment
                     let exerciseName = ex.name;
                     let exerciseDesc = ex.desc;
                     let sets = ex.sets;
+                    let method = "";
 
                     if (equip !== 'full' && exerciseAlternatives[ex.name]) {
                         if (equip === 'bodyweight') {
@@ -444,23 +472,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    // Adapt volume based on time
-                    if (parseInt(time) <= 30) {
+                    // Adapt volume and methods based on duration (time)
+                    if (duration <= 30) {
+                        // Circuit style
                         sets = sets.replace(/(\d+)x/, (match, p1) => {
                             const s = Math.max(2, parseInt(p1) - 1);
                             return s + "x";
                         });
-                    } else if (parseInt(time) >= 90) {
+                        method = "EXPRESS CIRCUIT";
+                        if (exIndex % 2 !== 0 && exIndex > 0) method = "SUPERSET";
+                    } else if (duration >= 90) {
+                        // High volume
                         sets = sets.replace(/(\d+)x/, (match, p1) => {
                             const s = parseInt(p1) + 1;
                             return s + "x";
                         });
+                        if (exIndex === dayInfo.exercises.length - 1) method = "BURNOUT SET";
+                        else method = "TIME-UNDER-TENSION";
                     }
 
                     return `
-                        <li class="exercise-item">
+                        <li class="exercise-item ${method ? 'has-method' : ''}">
                             <div class="ex-info">
-                                <h4>${exerciseName}</h4>
+                                <div class="ex-header">
+                                    <h4>${exerciseName}</h4>
+                                    ${method ? `<span class="method-badge">${method}</span>` : ''}
+                                </div>
                                 <p>${exerciseDesc || 'Focus on controlled movement and tempo.'}</p>
                             </div>
                             <div class="ex-sets">${sets}</div>
@@ -476,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(m.includes('leg')) icon = 'person-running';
                 if(m.includes('shoulder')) icon = 'up-down-left-right';
                 if(m.includes('arm')) icon = 'hand-fist';
-                if(m.includes('core') || m.includes('shred')) icon = 'fire';
+                if(m.includes('core') || m.includes('shred') || m.includes('hiit')) icon = 'fire';
 
                 card.innerHTML = `
                     <div class="day-header">
@@ -556,9 +593,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (resultArea) resultArea.style.display = 'block';
 
             // Scroll to top of result
-            window.scrollTo({ top: resultArea.offsetTop - 100, behavior: 'smooth' });
+            const scrollTarget = resultArea.offsetTop - 100;
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
         }
     }
+
+    // Move generatePlan declaration outside DOMContentLoaded or ensure it's accessible
+    window.generatePlan = generatePlan;
+    window.renderPlan = renderPlan;
 
     if(printBtn) {
         printBtn.addEventListener('click', () => window.print());

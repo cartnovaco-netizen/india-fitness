@@ -102,6 +102,36 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
+.rest-day-card {
+    border-left-color: #555;
+    background: rgba(255, 255, 255, 0.02);
+    opacity: 0.9;
+}
+
+.rest-content {
+    margin-top: 15px;
+}
+
+.rest-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.rest-content ul {
+    list-style: none;
+    padding-left: 5px;
+}
+
+.rest-content li {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .day-header {
     display: flex;
     justify-content: space-between;
@@ -156,10 +186,29 @@
     border-bottom: none;
 }
 
+.ex-info .ex-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
 .ex-info h4 {
     font-size: 1.05rem;
-    margin-bottom: 4px;
     color: var(--white);
+    margin: 0;
+}
+
+.method-badge {
+    font-size: 0.65rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(230, 57, 70, 0.3);
 }
 
 .ex-info p {
