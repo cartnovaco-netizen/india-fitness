@@ -26,10 +26,17 @@ module.exports = async function handler(req, res) {
     try {
       result = JSON.parse(text);
     } catch (e) {
-      return res.status(500).json({ success: false, message: 'External API error: ' + text.substring(0, 50) });
+      // Return the raw text if it's not JSON
+      return res.status(response.status).json({ 
+        success: false, 
+        message: 'External Error: ' + text.substring(0, 30),
+        status: response.status 
+      });
     }
     
+    // Always return the result from Web3Forms, even if it's a 4xx error
     return res.status(response.status).json(result);
+
   } catch (error) {
     console.error('Contact Form Error:', error);
     return res.status(500).json({ success: false, message: error.message });

@@ -284,13 +284,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (msg.includes('WEB3FORMS_ACCESS_KEY')) {
                         msg = 'KEY MISSING';
-                    } else if (msg.length > 15) {
-                        msg = 'SERVER ERROR';
                     }
                     
                     contactSubmitBtn.innerText = msg;
                     console.error('Submission failed:', err.message);
                 }
+
 
 
 
