@@ -261,8 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSubmitBtn.innerText = 'SENDING...';
             contactSubmitBtn.disabled = true;
             try {
+                // Smart Obfuscation: Prevents basic scrapers from harvesting your key
+                const _0x1a2b = ['6159f62e', '1f8b', '4c6d', 'b764', 'c3ed7930a754'];
+                const _key = _0x1a2b.join('-');
+
                 const formData = new FormData(contactForm);
+                formData.append('access_key', _key);
                 formData.append('phone', iti ? iti.getNumber() : (phoneInput ? phoneInput.value : ''));
+
                 
                 // Directly calling Web3Forms for Free Plan compatibility
                 const response = await fetch('https://api.web3forms.com/submit', {
