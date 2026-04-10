@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const trainers = data.trainers_data?.trainers || data.trainers || [];
             const teamGrid = document.querySelector('.team-grid');
             if (teamGrid && trainers.length > 0) {
-                teamGrid.innerHTML = ''; // Clear hardcoded
+                teamGrid.innerHTML = ''; // Successfully fetched, now clear hardcoded items
                 trainers.forEach((trainer, index) => {
                     const delay = index * 100;
                     
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const items = data.gallery_data?.items || data.items || [];
             const galleryGrid = document.querySelector('.gallery-grid');
             if (galleryGrid && items.length > 0) {
-                galleryGrid.innerHTML = ''; // Clear hardcoded
+                galleryGrid.innerHTML = ''; // Successfully fetched, now clear hardcoded items
                 items.forEach((item) => {
                     const card = `
                         <div class="gallery-item" data-aos="zoom-in">
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const plans = data.plans_data?.plans || data.plans || [];
             const plansGrid = document.querySelector('.plans-grid');
             if (plansGrid && plans.length > 0) {
-                plansGrid.innerHTML = ''; // Clear hardcoded
+                plansGrid.innerHTML = ''; // Successfully fetched, now clear placeholders
                 plans.forEach((plan, index) => {
                     const delay = index * 100;
                     

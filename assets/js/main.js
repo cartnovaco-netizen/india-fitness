@@ -170,6 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 4.3 Automated Footer Year
+    const yearSpan = document.getElementById('copyright-year');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+
     // 5. Staggered Text Reveal
     const sectionTitles = document.querySelectorAll('.section-title');
     if (sectionTitles.length > 0) {

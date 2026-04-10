@@ -20,7 +20,6 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('Worker: Caching Essential Assets');
             return cache.addAll(ASSETS);
         })
     );
