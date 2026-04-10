@@ -70,9 +70,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                     let featuresHtml = '';
                     if (plan.features && plan.features.length > 0) {
-                        featuresHtml = plan.features.map(f => {
-                            if(f.startsWith('★')) return `<li><i class="fas fa-star"></i> ${f.replace('★', '')}</li>`;
-                            return `<li><i class="fas fa-check"></i> ${f}</li>`;
+                        featuresHtml = plan.features.map((f, i) => {
+                            const fDelay = delay + (i * 50) + 200; // Staggered delay for each item
+                            const icon = f.startsWith('★') ? 'fa-star' : 'fa-check';
+                            const cleanText = f.replace('★', '');
+                            return `<li data-aos="fade-left" data-aos-delay="${fDelay}"><i class="fas ${icon}"></i> ${cleanText}</li>`;
                         }).join('');
                     }
 
