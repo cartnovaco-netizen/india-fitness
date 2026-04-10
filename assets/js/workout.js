@@ -277,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const goal = document.getElementById('goal').value;
             const days = document.getElementById('days').value;
             const splitPref = document.getElementById('splitPreference').value;
+            const level = document.getElementById('level').value;
             const time = document.getElementById('time').value;
             const equip = document.getElementById('equipment').value;
 
@@ -285,11 +286,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusText = aiLoading.querySelector('.ai-status');
             const steps = [
                 "ANALYZING YOUR BIOMETRICS...",
+                "ASSESSING " + level.toUpperCase() + " LEVEL REQUIREMENTS...",
                 "CALCULATING OPTIMAL VOLUME...",
                 "SELECTING BEST EXERCISES...",
                 "ADAPTING FOR " + equip.toUpperCase() + " EQUIPMENT...",
                 "FINALIZING YOUR AI PLAN..."
             ];
+
 
             aiLoading.style.display = 'flex';
             
@@ -305,13 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 aiLoading.style.display = 'none';
-                const inputs = { goal, days, time, equip, splitPref };
-                generatePlan(goal, days, time, equip, splitPref, true); // true means save to storage
+                const inputs = { goal, days, time, equip, splitPref, level };
+                generatePlan(goal, days, time, equip, splitPref, level, true); // true means save to storage
             }, 3500);
+
         });
     }
 
-    function generatePlan(goal, days, time, equip, splitPref = "2", shouldSave = false) {
+    function generatePlan(goal, days, time, equip, splitPref = "2", level = "intermediate", shouldSave = false) {
+
         // Selection Logic
         const goalData = workoutData[goal] || workoutData.muscle;
         
@@ -330,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const weeklySchedule = coach_distributeWeek(expandedPlan, days);
 
 
-        const inputs = { goal, days, time, equip, splitPref };
+        const inputs = { goal, days, time, equip, splitPref, level };
         renderPlan(weeklySchedule, goalData, inputs);
 
         if (shouldSave) {
@@ -409,16 +414,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Deep clone the plan to avoid modifying source workoutData
         const planToRender = JSON.parse(JSON.stringify(originalPlan));
         
-        const { goal, days, time, equip, splitPref } = inputs;
+        const { goal, days, time, equip, splitPref, level } = inputs;
         const duration = parseInt(time);
 
         // UI Updates for Main Results
         if (planTitle) planTitle.innerText = goalData.title;
         
         let subTitle = goalData.desc;
-        if (duration <= 30) subTitle = "🚀 Metabolic Express: High intensity, minimal rest (30 min).";
-        else if (duration >= 90) subTitle = "🛡️ Optimized Volume: Advanced growth and hypertrophy focus (90 min).";
-        else subTitle = "⚡ Standard Performance: Balanced volume and recovery (45-60 min).";
+        const levelMarker = { "beginner": "🟢 Beginner", "intermediate": "🟡 Intermediate", "advanced": "🔴 Advanced" }[level] || "🟡 Intermediate";
+        
+        if (duration <= 30) subTitle = `🚀 Metabolic Express | ${levelMarker}`;
+        else if (duration >= 90) subTitle = `🛡️ Elite Volume Mastery | ${levelMarker}`;
+        else subTitle = `⚡ Standard Performance | ${levelMarker}`;
+
         
         // Add split style info to subtitle
         const splitText = {
@@ -462,36 +470,47 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    // Scientific Protocol logic based on Goal and Duration
+                    // Scientific Protocol logic based on LEVEL, Goal and Duration
                     let repRange = "8-12";
                     let restTime = "60s";
                     let intensityNote = "Controlled tempo.";
 
+                    if (level === 'beginner') {
+                        repRange = "12-15";
+                        restTime = "90s";
+                        intensityNote = "Focus strictly on form and breathing.";
+                    } else if (level === 'advanced') {
+                        repRange = "6-10";
+                        restTime = "45-60s";
+                        intensityNote = "Maximum intensity. Execute to RPE 9.";
+                    }
+
                     if (goal === 'strength') {
-                        repRange = "3-6";
-                        restTime = duration >= 60 ? "120-180s" : "90s";
+                        repRange = level === 'beginner' ? "8-10" : "3-6";
+                        restTime = duration >= 60 ? "180s" : "120s";
                         intensityNote = "Maximum force on concentric.";
                     } else if (goal === 'fatloss') {
                         repRange = "15-20";
-                        restTime = "30-45s";
+                        restTime = "30s";
                         intensityNote = "Keep heart rate elevated.";
                     }
 
                     // Master Scaling Logic (Coach Grade)
                     const isCompound = compoundExercises.includes(ex.name);
                     
+                    // Experience Modifier for Sets
+                    let baseSets = parseInt(ex.sets.split('x')[0]);
+                    if (level === 'beginner') baseSets = Math.min(baseSets, 3);
+                    if (level === 'advanced') baseSets += 1;
+                    sets = baseSets + "x" + repRange;
+
                     if (duration <= 30) {
-                        sets = isCompound ? "3x" : "2x";
-                        method = "EXPRESS CIRCUIT";
-                        if (exIndex % 2 !== 0 && exIndex > 0) method = "SUPERSET";
+                        method = level === 'beginner' ? "STRAIGHT SETS" : "EXPRESS CIRCUIT";
+                        if (level !== 'beginner' && exIndex % 2 !== 0 && exIndex > 0) method = "SUPERSET";
                     } else if (duration >= 90) {
-                        sets = sets.replace(/(\d+)x/, (match, p1) => {
-                            let s = parseInt(p1);
-                            if (s < 5) s += 1;
-                            return s + "x";
-                        });
-                        
-                        if (isCompound) {
+                        if (level === 'beginner') {
+                            method = "STEADY VOLUME";
+                        } else if (isCompound) {
                             method = "TIME-UNDER-TENSION";
                             if (exIndex === 0) {
                                 method = "CLUSTER SETS";
@@ -508,7 +527,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         method = isCompound ? "POWER FOCUS" : "VOLUME FOCUS";
                     }
 
-                    const finalSets = sets.includes('x') ? sets.split('x')[0] + 'x' + repRange : sets;
+                    const finalSets = sets;
+
 
                     return `
                         <li class="exercise-item ${method ? 'has-method' : ''}">
