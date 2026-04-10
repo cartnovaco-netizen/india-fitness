@@ -261,7 +261,17 @@ document.addEventListener('DOMContentLoaded', () => {
             popupAnchor: [0, -20]
         });
         L.marker([25.5825166, 85.1282286], { icon: gymIcon }).addTo(map)
-            .bindPopup('<b>India Fitness</b><br>Sipara, Patna.')
+            .bindPopup(`
+                <div style="text-align: center;">
+                    <b style="font-size: 1.1rem; color: #e63946;">India Fitness</b><br>
+                    <p style="margin: 5px 0 10px; color: #333;">Sipara, Patna Gaya Road</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=25.5825166,85.1282286" 
+                       target="_blank" 
+                       style="background: #e63946; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-block; font-size: 0.8rem;">
+                       GET DIRECTIONS
+                    </a>
+                </div>
+            `)
             .openPopup();
     }
 
