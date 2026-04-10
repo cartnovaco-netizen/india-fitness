@@ -313,20 +313,21 @@
                         <!-- Key removed for security; handled via /api/contact -->
 
                         <div class="form-group">
-                            <input type="text" id="contactName" class="form-control" placeholder="Your Name" required>
+                            <input type="text" id="contactName" name="name" class="form-control" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" id="contactEmail" class="form-control" placeholder="Your Email"
+                            <input type="email" id="contactEmail" name="email" class="form-control" placeholder="Your Email"
                                 required>
                         </div>
                         <div class="form-group">
-                            <input type="tel" id="contactPhone" class="form-control" placeholder="Phone Number"
+                            <input type="tel" id="contactPhone" name="phone" class="form-control" placeholder="Phone Number"
                                 required>
                         </div>
                         <div class="form-group">
-                            <textarea id="contactMessage" class="form-control" rows="4" placeholder="Your Message"
+                            <textarea id="contactMessage" name="message" class="form-control" rows="4" placeholder="Your Message"
                                 required></textarea>
                         </div>
+
 
                         <!-- Honeypot Field (Anti-Bot) -->
                         <div style="display:none;">
