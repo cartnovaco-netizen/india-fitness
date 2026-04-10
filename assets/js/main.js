@@ -262,17 +262,28 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSubmitBtn.disabled = true;
             try {
                 const formData = new FormData(contactForm);
-                formData.append('phone', iti ? iti.getNumber() : phoneInput.value);
-                const response = await fetch('https://api.web3forms.com/submit', {
+                formData.append('phone', iti ? iti.getNumber() : (phoneInput ? phoneInput.value : ''));
+                
+                // Securely fetch via our own serverless proxy
+                const response = await fetch('/api/contact', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify(Object.fromEntries(formData))
                 });
+
                 if (response.ok) {
                     contactSubmitBtn.innerText = 'MESSAGE SENT ✓';
                     contactSubmitBtn.classList.add('btn-success');
                     contactForm.reset();
+                } else {
+                    const err = await response.json();
+                    console.error('Submission failed:', err.message);
+                    contactSubmitBtn.innerText = 'FIX ERRORS';
                 }
+
             } catch (error) {
                 console.error(error);
             } finally {
