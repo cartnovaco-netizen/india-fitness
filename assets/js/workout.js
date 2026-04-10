@@ -471,26 +471,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.setAttribute('data-aos', 'fade-up');
                 card.style.animationDelay = `${index * 0.1}s`;
 
-                // Handle Rest Days
-                if(dayInfo.exercises.length === 0) {
-                    card.classList.add('rest-day-card');
-                    card.innerHTML = `
-                        <div class="day-header">
-                            <h3><i class="fas fa-bed"></i> ${dayInfo.day}</h3>
-                            <span class="muscle-group">REST & RECOVERY</span>
-                        </div>
-                        <div class="rest-content">
-                            <p>Proper recovery is vital for muscle growth and performance. Focus on:</p>
-                            <ul>
-                                <li>✨ Active stretching or light walking</li>
-                                <li>💧 Extra hydration (3.5L+)</li>
-                                <li>😴 8 hours of quality sleep</li>
-                            </ul>
-                        </div>
-                    `;
-                    daysContainer.appendChild(card);
-                    return;
-                }
+                // In the main grid, we only show training days as cards 
+                // to match the user's requested 'days per week' count.
+                if(dayInfo.exercises.length === 0) return;
+                
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.setAttribute('data-aos', 'fade-up');
+                card.style.animationDelay = `${index * 0.1}s`;
                 
                 let exercisesHTML = dayInfo.exercises.map((ex, exIndex) => {
                     // Adapt exercise based on equipment
@@ -591,6 +579,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 daysContainer.appendChild(card);
             });
+
+            // Weekly Overview Summary (Compact)
+            const scheduleBar = document.createElement('div');
+            scheduleBar.className = 'weekly-schedule-bar';
+            const daysMap = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+            let barHTML = `<div class="schedule-title"><i class="fas fa-calendar-week"></i> 7-DAY WEEKLY SCHEDULE</div><div class="bar-items">`;
+            planToRender.forEach((day, i) => {
+                const isTraining = day.exercises.length > 0;
+                barHTML += `
+                    <div class="bar-day ${isTraining ? 'training' : 'rest'}">
+                        <span class="day-name">${daysMap[i]}</span>
+                        <span class="day-status">${isTraining ? '💪' : '🛌'}</span>
+                    </div>
+                `;
+            });
+            barHTML += `</div>`;
+            scheduleBar.innerHTML = barHTML;
+            daysContainer.prepend(scheduleBar);
 
             // Add Tips Card
             const tipsCard = document.createElement('div');
