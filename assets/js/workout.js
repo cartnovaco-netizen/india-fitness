@@ -140,36 +140,7 @@ const workoutData = {
         }
     }
 };
-            ],
-            "6": [
-                { day: "Day 1", muscle: "Metabolic PUSH", exercises: [
-                    { name: "Pushups", sets: "4x20", desc: "" },
-                    { name: "Overhead Press", sets: "4x12", desc: "" }
-                ]},
-                { day: "Day 2", muscle: "Metabolic PULL", exercises: [
-                    { name: "Rows", sets: "4x15", desc: "" },
-                    { name: "Pull-ups", sets: "3xMax", desc: "" }
-                ]},
-                { day: "Day 3", muscle: "Metabolic LEGS", exercises: [
-                    { name: "Squats", sets: "4x20", desc: "" },
-                    { name: "Lunges", sets: "4x15", desc: "" }
-                ]},
-                { day: "Day 4", muscle: "HIIT Session A", exercises: [
-                    { name: "Burpees", sets: "6x10", desc: "" },
-                    { name: "Plank", sets: "4x60s", desc: "" }
-                ]},
-                { day: "Day 5", muscle: "HIIT Session B", exercises: [
-                    { name: "Mountain Climbers", sets: "6x45s", desc: "" },
-                    { name: "Jumping Jacks", sets: "6x60s", desc: "" }
-                ]},
-                { day: "Day 6", muscle: "Total Body Shred", exercises: [
-                    { name: "Deadlifts", sets: "3x15", desc: "" },
-                    { name: "Bench Press", sets: "3x15", desc: "" }
-                ]}
-            ]
-        }
-    }
-};
+
 
 // Fallback plan if a specific combo isn't defined
 const fallbackPlan = [
