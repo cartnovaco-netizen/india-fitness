@@ -395,7 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedPlan) {
         try {
             const data = JSON.parse(savedPlan);
-            renderPlan(data.plan, data.goalData, data.inputs, true); // true = silent load (populates but stays hidden)
+            const shouldShowImmediately = window.location.hash === '#workout-result';
+            renderPlan(data.plan, data.goalData, data.inputs, !shouldShowImmediately); // if hash matches, don't be silent
         } catch (e) {
             console.error("Error loading saved plan", e);
         }
@@ -482,6 +483,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 goalData: goalData,
                 inputs: inputs
             }));
+            
+            // Dispatch custom event to sync other components (like global drawer)
+            window.dispatchEvent(new CustomEvent('workoutPlanGenerated', { detail: { weeklySchedule, goalData, inputs } }));
         }
     }
 
@@ -574,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "4": [0, 1, 3, 4],    // Mon, Tue, Thu, Fri
             "5": [0, 1, 2, 4, 5], // Mon, Tue, Wed, Fri, Sat
             "6": [0, 1, 2, 3, 4, 5] // Mon - Sat
-        }[dayCount] || [0, 1, 2, 3, 4, 5, 6];
+        }[String(dayCount)] || [0, 1, 2, 3, 4, 5, 6];
 
         trainingDays.forEach((td, idx) => {
             if (schema[idx] !== undefined) {

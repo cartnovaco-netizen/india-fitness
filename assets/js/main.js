@@ -146,6 +146,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Error loading global plan", e);
             }
         }
+
+        // 4.2 Real-time Sync for Drawer Summary
+        window.addEventListener('workoutPlanGenerated', (e) => {
+            const { weeklySchedule, inputs } = e.detail;
+            const summaryContainer = document.getElementById('drawer-summary-container');
+            const drawerGoal = document.getElementById('drawer-goal');
+            const drawerDaysList = document.getElementById('drawer-days-list');
+
+            if (summaryContainer && drawerGoal && drawerDaysList) {
+                summaryContainer.style.display = 'block';
+                drawerGoal.innerText = inputs.goal.charAt(0).toUpperCase() + inputs.goal.slice(1);
+                
+                drawerDaysList.innerHTML = '';
+                weeklySchedule.forEach(day => {
+                    if (day.exercises.length > 0) {
+                        const li = document.createElement('li');
+                        li.innerHTML = `${day.day} <span>${day.muscle}</span>`;
+                        drawerDaysList.appendChild(li);
+                    }
+                });
+            }
+        });
     }
 
     // 5. Staggered Text Reveal
