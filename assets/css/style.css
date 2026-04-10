@@ -237,9 +237,10 @@ nav {
     font-size: 1.8rem;
     cursor: pointer;
     color: var(--white);
-    z-index: 2100;
+    z-index: 2500; /* Ensure it stays above everything including the drawer */
     transition: var(--transition-fast);
-    padding: 5px;
+    padding: 10px;
+    position: relative;
 }
 
 .menu-toggle:hover {
@@ -281,7 +282,7 @@ nav {
 .menu-overlay.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: all;
+    pointer-events: auto;
 }
 
 /* Buttons */
@@ -1042,7 +1043,7 @@ textarea.form-control {
     .nav-links.active {
         right: 0;
         visibility: visible;
-        pointer-events: all;
+        pointer-events: auto;
     }
 
     .nav-links a {
