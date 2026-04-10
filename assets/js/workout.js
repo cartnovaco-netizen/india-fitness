@@ -320,7 +320,7 @@ const workoutData = {
                 ]}
             ]
         }
-
+    }
 };
 
 // Fallback plan if a specific combo isn't defined
