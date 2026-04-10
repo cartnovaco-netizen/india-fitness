@@ -272,7 +272,7 @@ nav {
     padding: 10px;
 }
 
-.menu-overlay {
+.menu-overlay-deprecated {
     position: fixed;
     top: 0;
     left: 0;
